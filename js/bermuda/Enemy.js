@@ -24,7 +24,7 @@ Enemy = function (game, index, locationX, locationY, type, gravityY, velocityX) 
         this.enemy.anchor.set(0.3, 0.4);
         this.enemy.body.angularVelocity = -75;
         this.enemy.alienName = 'Trecirclus';
-        this.enemy.price = 900;
+        this.enemy.price = 950;
         this.enemy.alpha = 0.9;
     }
 
@@ -36,8 +36,8 @@ Enemy = function (game, index, locationX, locationY, type, gravityY, velocityX) 
     }
 
     if (type == 'enemy3'){
-        this.enemy.alpha = 0.2;
-        game.add.tween(this.enemy).to( { alpha: 0.7 }, 1600, Phaser.Easing.Linear.None, true, 0, 1000, true);   
+        this.enemy.alpha = 0.3;
+        game.add.tween(this.enemy).to( { alpha: 0.8 }, 1600, Phaser.Easing.Linear.None, true, 0, 1000, true);   
         this.enemy.alienName = 'Spindrus'; 
         this.enemy.price = 600;
     }
@@ -52,7 +52,7 @@ Enemy = function (game, index, locationX, locationY, type, gravityY, velocityX) 
     if (type == 'enemy5'){
         this.enemy.body.angularVelocity = 90;
         this.enemy.alienName = 'Deminutus'; 
-        this.enemy.price = 850;
+        this.enemy.price = 800;
     }
 };
 

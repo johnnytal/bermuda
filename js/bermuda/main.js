@@ -96,28 +96,28 @@ game_main.prototype = {
         bestScoreLebal.alpha = 0.7;
         
         evadeUpgradeLebal = game.add.text(390, 13, 'Evade: N/A', {
-            font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         evadeUpgradeLebal.alpha = 0.2;
 
         flipUpgradeLebal = game.add.text(390, 36, 'Flip: N/A', {
-            font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         flipUpgradeLebal.alpha = 0.2;
         
         phantomUpgradeLebal = game.add.text(390, 59, 'Phantom: N/A', {
-            font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         phantomUpgradeLebal.alpha = 0.2;
 
-        netWorthLabel = this.add.text(320, 25, netWorth + " $", {
+        netWorthLabel = this.add.text(320, 27, netWorth + " $", {
             font: '20px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center'
         });
         netWorthLabel.anchor.set(0.5, 0.5);
         netWorthLabel.alpha = 0.9; 
         
-        photosLeftLabel = this.add.text(605, 95, photosToTake, {
-            font: '20px ' + font, fill: '#f4f7f7', fontWeight: 'normal', align: 'center'
+        photosLeftLabel = this.add.text(560, 45, photosToTake, {
+            font: '20px ' + font, fill: '#f4e6f7', fontWeight: 'normal', align: 'center'
         });
         photosLeftLabel.anchor.set(0.5, 0.5);
         photosLeftLabel.alpha = 0.9; 
@@ -403,8 +403,8 @@ function create_enemy(){ // make a new enemy
     var index =  enemies.length;
     
     var type;
-    if (score < 500) type = 2;
-    else if (score >= 600 && score < 850) type = game.rnd.integerInRange(1, 2);
+    if (score < 550) type = 2;
+    else if (score >= 550 && score < 850) type = game.rnd.integerInRange(1, 2);
     else if (score >= 850 && score < 1700) type = game.rnd.integerInRange(1, 3);
     else if (score >= 1700 && score < 2850) type = game.rnd.integerInRange(1, 4);
     else { type = game.rnd.integerInRange(1, 5); }
@@ -415,7 +415,7 @@ function create_enemy(){ // make a new enemy
     var velocityX = game.rnd.integerInRange(-70, -120); // enemy's horizontal speed
     var gravityY = game.rnd.integerInRange(25, 70) + (timeFactor * 6); // enemy's vertical gravity. increase values to make game more difficult
     
-    var time_to_next_enemy = game.rnd.integerInRange(4000 , 7250) - (timeFactor * 90); // how long it takes for new enemies to appear
+    var time_to_next_enemy = game.rnd.integerInRange(3750 , 7100) - (timeFactor * 90); // how long it takes for new enemies to appear
     
     enemy_timer = game.time.events.add(time_to_next_enemy, function(){
         if (!storeEntered){
@@ -700,6 +700,7 @@ function enterStore(){
     clearInterval(scoreInterval);
     clearInterval(clickInterval);
     storeEntered = true;
+    camera_btn.inputEnabled = false;
     
     modal.createModal({
         type:"store",
@@ -901,6 +902,8 @@ function enterStore(){
                     scoreInt();
                     clickClock();
                     storeEntered = false;
+                    camera_btn.inputEnabled = true;
+                    
                     try{
                         banner.hide();
                     } catch(e){}
@@ -924,7 +927,7 @@ function enterStore(){
 
 function purchaseItem(item, price){
     if (netWorth >= price){
-        if (item.key == 'cameraBtn'){
+        if (item.key == 'cameraBtn2'){
             photosToTake += 5;
             photosLeftLabel.text = photosToTake;
         }
