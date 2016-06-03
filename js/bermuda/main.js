@@ -68,7 +68,22 @@ game_main.prototype = {
             
         anim = plane.animations.add('walk');
         anim.play(10, true);
-        
+       
+        window.onkeydown = function(event) { 
+            if (event.keyCode == 65){
+                turnPlane('right');
+            }
+            else if (event.keyCode == 83){
+                turnPlane('left');
+            } 
+            else if (event.keyCode == 68){
+                turnPlane('up');
+            }
+             else if (event.keyCode == 70){
+                turnPlane('down');
+            }
+        };
+
         plane.body.velocity.y = PLANE_VELOCITY;
         plane.body.velocity.x = PLANE_VELOCITY / 10;
         plane.angle = PLANE_ANGLE;
@@ -100,7 +115,7 @@ game_main.prototype = {
         });
         evadeUpgradeLebal.alpha = 0.2;
 
-        flipUpgradeLebal = game.add.text(390, 36, 'Flip: N/A', {
+        flipUpgradeLebal = game.add.text(390, 36, 'Thurst: N/A', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         flipUpgradeLebal.alpha = 0.2;
@@ -110,7 +125,7 @@ game_main.prototype = {
         });
         phantomUpgradeLebal.alpha = 0.2;
 
-        netWorthLabel = this.add.text(320, 27, netWorth + " $", {
+        netWorthLabel = this.add.text(320, 27, netWorth + "$", {
             font: '20px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center'
         });
         netWorthLabel.anchor.set(0.5, 0.5);
@@ -212,7 +227,7 @@ game_main.prototype = {
     
             }
             else{ // when user release mouse
-                plane.body.velocity.y = ( PLANE_VELOCITY + 40 - (timeFactor * 2.5) ) * manuverFactor * manuverFactorUp;
+                plane.body.velocity.y = ( PLANE_VELOCITY + 40 - (timeFactor * 2) ) * manuverFactorUp;
                 plane.body.velocity.x = PLANE_VELOCITY / 10 * manuverFactor * manuverFactorUp;
                 
                 if (plane.angle > PLANE_ANGLE){
@@ -274,7 +289,7 @@ game_main.prototype = {
         var time_to_next_terrain = game.rnd.integerInRange(8250, 17000) - (timeFactor * 35);
 
         var terrains = ['ground_13', 'ground_14', 'cave_lake_2', 'cave_large_rock_1', 
-        'cave_stalactite_1', 'cave_stalactite_4', 'cave_platform_3', 'cave_platform_2'];
+        'cave_stalactite_1', 'cave_stalactite_4', 'cave_platform_3', 'cave_platform_2', 'cave_platform_4'];
         
         var terrain_type = game.rnd.integerInRange(0, terrains.length - 1);
         
@@ -328,7 +343,7 @@ game_main.prototype = {
 };
 
 function flyPlane(){
-    plane.body.velocity.y = -(PLANE_VELOCITY * manuverFactor * manuverFactorUp) * 2 - 40 + (timeFactor * 2.5) ;
+    plane.body.velocity.y = -(PLANE_VELOCITY * manuverFactorUp) * 2 - 40 + (timeFactor * 2) ;
     plane.body.velocity.x = -(PLANE_VELOCITY * manuverFactor * manuverFactorUp) / 5;
 
     
@@ -412,10 +427,10 @@ function create_enemy(){ // make a new enemy
     var locationX = game.rnd.integerInRange(WIDTH + 50, WIDTH + 100); // starting enemy's x location
     var locationY = game.rnd.integerInRange(-35, HEIGHT + 35); // starting enemy's y location
 
-    var velocityX = game.rnd.integerInRange(-70, -120); // enemy's horizontal speed
-    var gravityY = game.rnd.integerInRange(25, 70) + (timeFactor * 6); // enemy's vertical gravity. increase values to make game more difficult
+    var velocityX = game.rnd.integerInRange(-70, -140); // enemy's horizontal speed
+    var gravityY = game.rnd.integerInRange(20, 60) + (timeFactor * 7); // enemy's vertical gravity. increase values to make game more difficult
     
-    var time_to_next_enemy = game.rnd.integerInRange(3750 , 7100) - (timeFactor * 90); // how long it takes for new enemies to appear
+    var time_to_next_enemy = game.rnd.integerInRange(3750 , 7100) - (timeFactor * 100); // how long it takes for new enemies to appear
     
     enemy_timer = game.time.events.add(time_to_next_enemy, function(){
         if (!storeEntered){
@@ -483,6 +498,8 @@ function alienTextTweeing(_i, _distance, _price, _name, _xPos, _yPos){
     );
     photoLabel.alpha = 0.8;
     
+    netWorth += _price;
+    
     setTimeout(function(){
          tweenAlienText = this.game.add.tween(photoLabel)
             .to( {x: netWorthLabel.x, y: netWorthLabel.y}, 800, Phaser.Easing.Sinusoidal.InOut)
@@ -490,9 +507,8 @@ function alienTextTweeing(_i, _distance, _price, _name, _xPos, _yPos){
         
         tweenAlienText.onComplete.add(function(){ 
             photoLabel.text = "";
-            netWorth += _price;
             totalNetWorth += _price;
-            netWorthLabel.text = netWorth + " $";
+            netWorthLabel.text = netWorth + "$";
             tween = this.game.add.tween(netWorthLabel.scale)
             .to({ x: 1.35, y: 1.35 }, 400, Phaser.Easing.Linear.InOut)
         .start();   
@@ -615,7 +631,7 @@ function clickClock(){
         if (timeFactor < 45){
             timeFactor++;
         }
-    },2500);
+    }, 4000);
 }
 
 function create_fog(){
@@ -645,27 +661,25 @@ function create_fog(){
 
 function turnPlane(direction){
     if (direction == 'right'){
-        plane.body.angularVelocity = 350;
+        if (plane.body.x > 150){
+            manuverFactor = 20;
+        }
     }
     else if (direction == 'left'){
-        plane.body.angularVelocity = -350;
+        manuverFactor = -20; 
     }
-    
-    setTimeout(function(){
-        plane.body.angularVelocity = 0;
-        plane.angle = PLANE_ANGLE;
-    },1000);
-    
-    if (direction == 'up'){
-        manuverFactor = -2.75;
+
+    else if (direction == 'up'){
+        manuverFactorUp = -2.5;
     }
     
     else if (direction == 'down'){
-        manuverFactor = 2.75;
+        manuverFactorUp = 2.5;
     }
     
     setTimeout(function(){
         manuverFactor = 1;
+        manuverFactorUp = 1;
     },300);
 }
 
@@ -727,7 +741,7 @@ function enterStore(){
             },
             {
                 type: "text",
-                content: netWorthLabel.text,
+                content: netWorth + "$",
                 fontFamily: font,
                 fontSize: 26,
                 color: "0xf7f7f7",
@@ -743,7 +757,7 @@ function enterStore(){
                     offsetY: -100,
                     offsetX: -180,
                     callback: function () { 
-                        purchaseItem(this, 1600);
+                        purchaseItem(this, 900);
                     }
                 },
                 
@@ -763,7 +777,7 @@ function enterStore(){
                     offsetY: 180,
                     offsetX: -180,
                     callback: function () { 
-                        purchaseItem(this, 900);
+                        purchaseItem(this, 1600);
                     }
                 },
                 
@@ -809,7 +823,7 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Evade - 1,600$",
+                    content: "Evade - 900$",
                     offsetY: -130,
                     offsetX: -160,       
                     fontFamily: font,
@@ -833,7 +847,7 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Flip - 900$",
+                    content: "Thurst - 1,600$",
                     offsetY: 150,
                     offsetX: -160,
                     fontFamily: font,
@@ -947,7 +961,7 @@ function purchaseItem(item, price){
                 enableUpgrade('flip');
                 
                 flipUpgradeLebal.alpha = 0.8;
-                flipUpgradeLebal.text = "Flip: Swipe left/right";
+                flipUpgradeLebal.text = "Thurst: Swipe left/right";
             }
             
             else if (item.key == 'upPhantom'){
@@ -975,11 +989,11 @@ function purchaseItem(item, price){
             
             else if (item.key == 'upSpeed'){
                 item.tint = '0xf75432';
-                manuverFactorUp = 1.8;
+                manuverFactorUp = 1.6;
             }
             
             netWorth -= price;
-            netWorthLabel.text = netWorth + " $";
+            netWorthLabel.text = netWorth + "$";
             modal.getModalItem('store', 3).text = netWorthLabel.text;
         }
     }
@@ -1003,7 +1017,7 @@ function enableUpgrade(which){
         }
         
         else{
-            window.onkeydown = function(event) { 
+            window.onkeydown = function(event) {
                 if (event.keyCode == 68){
                     turnPlane('up');
                 }

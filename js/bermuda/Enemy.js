@@ -43,8 +43,8 @@ Enemy = function (game, index, locationX, locationY, type, gravityY, velocityX) 
     }
     
     if (type == 'enemy4'){
-        this.enemy.body.velocity.x = velocityX / 1.15;
-        game.add.tween(this.enemy.scale).to({ x: 1.65, y: 1.65}, 2600, Phaser.Easing.Circular.None, true, 0, 1000, true);
+        this.enemy.body.gravity.y = gravityY / 1.5;
+        game.add.tween(this.enemy.scale).to({ x: 1.7, y: 1.7}, 2600, Phaser.Easing.Circular.None, true, 0, 1000, true);
         this.enemy.alienName = 'Medusoza';
         this.enemy.price = 1100; 
     }
