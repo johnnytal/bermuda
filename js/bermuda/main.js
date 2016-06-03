@@ -39,7 +39,7 @@ game_main.prototype = {
         bg.alpha = 0.7;
         bg.inputEnabled = true;
         bg.events.onInputDown.add(flyPlane, this);
-        
+
         deco_group = this.add.group();
         
         camera_btn = this.add.button(570, 5, 'cameraBtn');
@@ -97,15 +97,17 @@ game_main.prototype = {
 
         modal = new gameModal(game);
 
-        scoreLabel = this.add.text(20, 19, 'Miles passed: ' + (score / 1000), {
-            font: '17px ' + font, fill: 'white', fontWeight: 'normal', align: 'center'
+        scoreLabel = this.add.text(75, 35, (score / 1000).toFixed(1) + ' M' , {
+            font: '17px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
         });
         scoreLabel.alpha = 0.8; 
+        scoreLabel.padding.set(10, 5);
+        scoreLabel.anchor.set(1, 0.5);
         
         bestScore = localStorage.getItem("bermuda-bestScore");
         if (bestScore == null) bestScore = 0;
         
-        bestScoreLebal = this.add.text(20, 44, 'Best: ' + bestScore + ' Miles', {
+        bestScoreLebal = this.add.text(20, 44, 'Best: ' + bestScore + ' M', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestScoreLebal.alpha = 0.7;
@@ -165,12 +167,9 @@ game_main.prototype = {
         this.createDeco();
         
         clickClock();
-
-        pauseLabel = this.add.text(260, 40, 'Game Paused', {
-            font: '26px ' + font, fill: 'lightgrey', fontWeight: 'normal', align: 'center'
-        });
-        pauseLabel.fixedToCamera = true;
-        pauseLabel.visible = false;
+        
+       /* blood = this.add.image(0,0, 'blood');
+        blood.alpha = 0.5;*/
         
         if (!this.game.device.desktop){
             try{ mc.destroy(); }catch(e){}
@@ -659,13 +658,13 @@ function create_fog(){
 }
 
 function turnPlane(direction){
-    if (direction == 'right'){
-        if (plane.body.x > 150){
-            manuverFactor = -20;
-        }
+    if (direction == 'right'){      
+        manuverFactor = -20;  
     }
     else if (direction == 'left'){
-        manuverFactor = 20; 
+        if (plane.body.x > 150){
+            manuverFactor = 20; 
+        }
     }
 
     else if (direction == 'up'){
@@ -699,7 +698,7 @@ function scoreInt(){
     scoreInterval = setInterval(function(){ // adds score (or 'distance') every 1000 ms
         if (!game.paused){
             score += BASIC_SCORE;
-            scoreLabel.text = 'Miles passed: ' + (score / 1000);
+            scoreLabel.text = (score / 1000).toFixed(1) + ' M';
             
             var realScore = score / 1000;
             if (realScore == 1.5 || realScore == 3 || realScore == 4.5 || realScore == 6 || realScore == 7.5 || realScore == 9){

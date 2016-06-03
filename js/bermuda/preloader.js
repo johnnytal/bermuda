@@ -45,6 +45,8 @@ preloader.prototype = {
         this.game.load.image("cave_platform_3","assets/bermuda/images/cave_platform_3.png");
         this.game.load.image("cave_platform_4","assets/bermuda/images/cave_platform_4.png");
         
+        this.game.load.image("blood","assets/bermuda/images/blood.png");
+        
         this.game.load.image("deco11","assets/bermuda/images/deco11.png");
         this.game.load.image("deco10","assets/bermuda/images/deco10.png");
         this.game.load.image("deco9","assets/bermuda/images/deco9.png");
