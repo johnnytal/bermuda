@@ -110,17 +110,17 @@ game_main.prototype = {
         });
         bestScoreLebal.alpha = 0.7;
         
-        evadeUpgradeLebal = game.add.text(390, 13, 'Evade: N/A', {
+        evadeUpgradeLebal = game.add.text(390, 12, 'Evade: N/A', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         evadeUpgradeLebal.alpha = 0.2;
 
-        flipUpgradeLebal = game.add.text(390, 36, 'Thurst: N/A', {
+        flipUpgradeLebal = game.add.text(390, 33, 'Thurst: N/A', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         flipUpgradeLebal.alpha = 0.2;
         
-        phantomUpgradeLebal = game.add.text(390, 59, 'Phantom: N/A', {
+        phantomUpgradeLebal = game.add.text(390, 54, 'Phantom: N/A', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         phantomUpgradeLebal.alpha = 0.2;
@@ -131,11 +131,10 @@ game_main.prototype = {
         netWorthLabel.anchor.set(0.5, 0.5);
         netWorthLabel.alpha = 0.9; 
         
-        photosLeftLabel = this.add.text(560, 45, photosToTake, {
-            font: '20px ' + font, fill: '#f4e6f7', fontWeight: 'normal', align: 'center'
+        photosLeftLabel = this.add.text(608, 44, photosToTake, {
+            font: '21px ' + font, fill: '#f4e4f7', fontWeight: 'normal', align: 'center'
         });
         photosLeftLabel.anchor.set(0.5, 0.5);
-        photosLeftLabel.alpha = 0.9; 
         photosLeftLabel.padding.set(5, 5);
         
         scoreInt();
@@ -299,7 +298,7 @@ game_main.prototype = {
         if (terrain_type == 2 ) height_factor = 55;
         if (terrain_type == 3) height_factor = 100;
         if (terrain_type == 4 || terrain_type == 5) height_factor = -(HEIGHT - spriteHeight);
-        if (terrain_type == 6 || terrain_type == 7) height_factor = game.rnd.integerInRange(-400, -150);
+        if (terrain_type == 6 || terrain_type == 7 || terrain_type == 8) height_factor = game.rnd.integerInRange(-400, -150);
       
         terrain_timer = game.time.events.add(time_to_next_terrain, function(){
             this.createTerrain();
@@ -490,11 +489,11 @@ function takePhoto(){
 function alienTextTweeing(_i, _distance, _price, _name, _xPos, _yPos){                          
     var alienText =   
     '' + _name + 
-    "\n" + _distance + " Yd." +
-    "\n" + _price +  " $";
+    "\n" + _distance + " yd" +
+    "\n" + _price +  "$";
       
     var photoLabel = game.add.text(_xPos, _yPos,
-       alienText, {font: '22px ' + font, fill: 'white', fontWeight: 'normal', align: 'left'}
+       alienText, {font: '22px ' + font, fill: 'white', fontWeight: 'normal', align: 'center'}
     );
     photoLabel.alpha = 0.8;
     
@@ -662,11 +661,11 @@ function create_fog(){
 function turnPlane(direction){
     if (direction == 'right'){
         if (plane.body.x > 150){
-            manuverFactor = 20;
+            manuverFactor = -20;
         }
     }
     else if (direction == 'left'){
-        manuverFactor = -20; 
+        manuverFactor = 20; 
     }
 
     else if (direction == 'up'){
@@ -680,7 +679,7 @@ function turnPlane(direction){
     setTimeout(function(){
         manuverFactor = 1;
         manuverFactorUp = 1;
-    },300);
+    }, 300);
 }
 
 function tweenTint(obj, startColor, endColor, time) {    
@@ -777,7 +776,7 @@ function enterStore(){
                     offsetY: 180,
                     offsetX: -180,
                     callback: function () { 
-                        purchaseItem(this, 1600);
+                        purchaseItem(this, 1800);
                     }
                 },
                 
@@ -847,7 +846,7 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Thurst - 1,600$",
+                    content: "Thurst - 1,800$",
                     offsetY: 150,
                     offsetX: -160,
                     fontFamily: font,
