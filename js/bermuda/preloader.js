@@ -3,8 +3,10 @@ var preloader = function(game){};
 preloader.prototype = {
     preload: function(){ 
         // create progress % text
+        this.add.image(0,0,'1024x1024');
+        
         font = 'Creepster';
-         
+
         this.progress = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 30, '0%',{
              font: '25px ' + font, fill: 'white', fontWeight: 'normal', align: 'center'
         });
@@ -64,7 +66,7 @@ preloader.prototype = {
         
         this.game.load.image("cannonBtn", "assets/bermuda/images/cannon.png");
         this.game.load.image("cameraBtn","assets/bermuda/images/cameraBtn.png");
-        this.game.load.image("cameraBtn2","assets/bermuda/images/cameraBtn2.png");
+        this.game.load.image("upCamera","assets/bermuda/images/upCamera.png");
         this.game.load.image("bullet","assets/bermuda/images/bullet.png");
         
         /*this.game.load.image("scary1","assets/bermuda/images/teddy.png");
@@ -95,8 +97,6 @@ preloader.prototype = {
     },
     
     create: function(){
-        //button = false;
-
         try{
             loadMusic.stop();   
         }catch(e){}

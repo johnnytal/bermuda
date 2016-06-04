@@ -62,8 +62,8 @@ game_main.prototype = {
         this.lightning.filters = [ this.game.add.filter('Glow') ];
         this.lightning.anchor.setTo(0.5, 0);
 
-        blood = this.add.image(0,-17, 'blood');
-        blood.alpha = 0.3;
+        blood = this.add.image(0, 0, 'blood');
+        blood.alpha = 0.2;
   
         camera_btn = this.add.button(568, 0, 'cameraBtn');
         camera_btn.inputEnabled = true;
@@ -107,7 +107,7 @@ game_main.prototype = {
 
         modal = new gameModal(game);
 
-        scoreLabel = this.add.text(75, 35, (score / 1000).toFixed(1) + ' M' , {
+        scoreLabel = this.add.text(75, 32, (score / 1000).toFixed(1) + ' M' , {
             font: '21px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
             stroke: "0x000000", strokeThickness: 3
         });
@@ -118,23 +118,23 @@ game_main.prototype = {
         bestScore = localStorage.getItem("bermuda-bestScore");
         if (bestScore == null) bestScore = 0;
         
-        bestScoreLebal = this.add.text(17, 44, 'Best: ' + bestScore + ' M', {
+        bestScoreLebal = this.add.text(17, 41, 'Best: ' + bestScore + ' M', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestScoreLebal.alpha = 0.7;
         
-        evadeUpgradeLebal = game.add.text(120, 8, 'Evade: N/A', {
-            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+        evadeUpgradeLebal = game.add.text(120, 8, 'Evade: ?', {
+            font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         evadeUpgradeLebal.alpha = 0.3;
 
-        flipUpgradeLebal = game.add.text(120, 29, 'Thurst: N/A', {
-            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+        flipUpgradeLebal = game.add.text(120, 29, 'Thurst: ?', {
+            font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         flipUpgradeLebal.alpha = 0.3;
         
-        phantomUpgradeLebal = game.add.text(120, 50, 'Phantom: N/A', {
-            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+        phantomUpgradeLebal = game.add.text(120, 50, 'Phantom: ?', {
+            font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         phantomUpgradeLebal.alpha = 0.3;
 
@@ -725,7 +725,7 @@ function scoreInt(){
             scoreLabel.text = (score / 1000).toFixed(1) + ' M';
             
             var realScore = score / 1000;
-            if (realScore == 0.1 || realScore == 3 || realScore == 4.5 || realScore == 6 || realScore == 7.5 || realScore == 9){
+            if (realScore == 1.5 || realScore == 3 || realScore == 4.5 || realScore == 6 || realScore == 7.5 || realScore == 9){
                 enterStore();
             }
         }
@@ -747,13 +747,10 @@ function enterStore(){
              {
                 type: "image",
                 content: "panelStore",
-                offsetY: 0,
-                offsetX: 0,
-                contentScale: 1
             },
             {
                 type: "text",
-                content: "Bermuda Upgrade Store",
+                content: "",
                 fontFamily: font,
                 fontSize: 30,
                 color: "0xf7f7f7",
@@ -764,21 +761,21 @@ function enterStore(){
             },
             {
                 type: "text",
-                content: netWorth + "$" + "\n(Photos: " + photosToTake + ")",
+                content: netWorth + "$",
                 fontFamily: font,
-                fontSize: 24,
-                color: "0xf7f7f7",
-                offsetY: -190,
-                offsetX: 150,
+                fontSize: 32,
+                color: "0xf4fef4",
+                offsetY: -180,
+                offsetX: 130,
                 stroke: "0x000000",
-                strokeThickness: 5
+                strokeThickness: 7
             },
 
              {
                     type: "image",
                     content: "upEvade",
-                    offsetY: -100,
-                    offsetX: -180,
+                    offsetY: -140,
+                    offsetX: -230,
                     callback: function () { 
                         purchaseItem(this, 900);
                     }
@@ -787,8 +784,8 @@ function enterStore(){
                 {
                     type: "image",
                     content: "upPhantom",
-                    offsetY: 40,
-                    offsetX: -180,
+                    offsetY: 0,
+                    offsetX: -230,
                     callback: function () { 
                         purchaseItem(this, 4300);
                     }
@@ -797,8 +794,8 @@ function enterStore(){
                 {
                     type: "image",
                     content: "upFlip",
-                    offsetY: 180,
-                    offsetX: -180,
+                    offsetY: 140,
+                    offsetX: -230,
                     callback: function () { 
                         purchaseItem(this, 1800);
                     }
@@ -807,8 +804,8 @@ function enterStore(){
                {
                     type: "image",
                     content: "upSpeed",
-                    offsetY: -100,
-                    offsetX: 0,
+                    offsetY: -140,
+                    offsetX: -50,
                     callback: function () { 
                         purchaseItem(this, 2000);
                     }
@@ -817,8 +814,8 @@ function enterStore(){
                 {
                     type: "image",
                     content: "upSmall",
-                    offsetY: 40,
-                    offsetX: 0,
+                    offsetY: 0,
+                    offsetX: -50,
                     callback: function () { 
                         purchaseItem(this, 3200);
                     }
@@ -827,8 +824,8 @@ function enterStore(){
                 {
                     type: "image",
                     content: "upShoot",
-                    offsetY: 180,
-                    offsetX: 0,
+                    offsetY: 140,
+                    offsetX: -50,
                     callback: function () { 
                         purchaseItem(this, 5100);
                     }
@@ -836,9 +833,9 @@ function enterStore(){
                 
                 {
                     type: "image",
-                    content: "cameraBtn2",
-                    offsetY: -100,
-                    offsetX: 150,
+                    content: "upCamera",
+                    offsetY: -60,
+                    offsetX: 130,
                     callback: function () { 
                         purchaseItem(this, 400);
                     }
@@ -847,8 +844,8 @@ function enterStore(){
                 {
                     type: "text",
                     content: "Evade - 900$",
-                    offsetY: -130,
-                    offsetX: -160,       
+                    offsetY: -180,
+                    offsetX: -230,       
                     fontFamily: font,
                     fontSize: 19,
                     color: "0xf7f7f7",
@@ -859,8 +856,8 @@ function enterStore(){
                 {
                     type: "text",
                     content: "Phantom - 4,300$",
-                    offsetY: 10,
-                    offsetX: -160,       
+                    offsetY: -40,
+                    offsetX: -230,       
                     fontFamily: font,
                     fontSize: 19,
                     color: "0xf7f7f7",
@@ -871,8 +868,8 @@ function enterStore(){
                 {
                     type: "text",
                     content: "Thurst - 1,800$",
-                    offsetY: 150,
-                    offsetX: -160,
+                    offsetY: 100,
+                    offsetX: -230,
                     fontFamily: font,
                     fontSize: 19,
                     color: "0xf7f7f7",
@@ -883,8 +880,8 @@ function enterStore(){
                {
                     type: "text",
                     content: "Speed - 2,000$",
-                    offsetY: -130,
-                    offsetX: 20,
+                    offsetY: -180,
+                    offsetX: -50,
                     fontFamily: font,
                     fontSize: 19,
                     color: "0xf7f7f7",
@@ -895,8 +892,8 @@ function enterStore(){
                 {
                     type: "text",
                     content: "Minfy - 3,200$",
-                    offsetY: 10,
-                    offsetX: 20,
+                    offsetY: -40,
+                    offsetX: -50,
                     fontFamily: font,
                     fontSize: 19,
                     color: "0xf7f7f7",
@@ -907,8 +904,8 @@ function enterStore(){
                 {
                     type: "text",
                     content: "Cannon - 5,100$",
-                    offsetY: 150,
-                    offsetX: 19,
+                    offsetY: 100,
+                    offsetX: -50,
                     fontFamily: font,
                     fontSize: 20,
                     color: "0xf7f7f7",
@@ -918,9 +915,9 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "5 photos - 400$",
-                    offsetY: -130,
-                    offsetX: 170,
+                    content: "5 photos - 400$" + " (" + photosToTake + ")",
+                    offsetY: -100,
+                    offsetX: 130,
                     fontFamily: font,
                     fontSize: 19,
                     color: "0xf7f7f7",
@@ -932,8 +929,9 @@ function enterStore(){
             {
                 type: "image",
                 content: "replay",
-                offsetY: 180,
-                offsetX: 150,
+                offsetY: 120,
+                offsetX: 130,
+                contentScale: 1.3,
                 callback: function () { 
                     clickSfx.play();
                     scoreInt();
@@ -967,9 +965,10 @@ function enterStore(){
 
 function purchaseItem(item, price){
     if (netWorth >= price){
-        if (item.key == 'cameraBtn2'){
+        if (item.key == 'upCamera'){
             photosToTake += 5;
             photosLeftLabel.text = photosToTake;
+            modal.getModalItem('store', 17).text = "5 photos - 400$" + " (" + photosToTake + ")";
         }
         
         if (!(item.tint == '0xf75432')){
@@ -1026,7 +1025,7 @@ function purchaseItem(item, price){
             
             netWorth -= price;
             netWorthLabel.text = netWorth + "$";
-            modal.getModalItem('store', 3).text = netWorthLabel.text + "\n(Photos: " + photosToTake + ")";
+            modal.getModalItem('store', 3).text = netWorthLabel.text;
         }
     }
 }
