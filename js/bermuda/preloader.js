@@ -26,6 +26,7 @@ preloader.prototype = {
         this.game.load.image("replay", "assets/bermuda/images/replay.png");
         this.game.load.image("menu", "assets/bermuda/images/menu.png");
         this.game.load.image("window", "assets/bermuda/images/panel.png");
+        this.game.load.image("panelStore", "assets/bermuda/images/panelStore.png");
         this.game.load.image("bg","assets/bermuda/images/background.png");
         this.game.load.image("rain","assets/bermuda/images/rain.png");
         this.game.load.image("rain2","assets/bermuda/images/rain2.png");

@@ -36,6 +36,7 @@ game_main.prototype = {
         
         score = 0;
         netWorth = 0;
+        totalNetWorth = 0;
         timeFactor = 1;
         manuverFactorUp = 1;
         photosToTake = 10;
@@ -64,7 +65,7 @@ game_main.prototype = {
         blood = this.add.image(0,-17, 'blood');
         blood.alpha = 0.3;
   
-        camera_btn = this.add.button(570, 0, 'cameraBtn');
+        camera_btn = this.add.button(568, 0, 'cameraBtn');
         camera_btn.inputEnabled = true;
         camera_btn.input.useHandCursor = true;
         camera_btn.events.onInputDown.add(takePhoto, this);
@@ -724,7 +725,7 @@ function scoreInt(){
             scoreLabel.text = (score / 1000).toFixed(1) + ' M';
             
             var realScore = score / 1000;
-            if (realScore == 1.5 || realScore == 3 || realScore == 4.5 || realScore == 6 || realScore == 7.5 || realScore == 9){
+            if (realScore == 0.1 || realScore == 3 || realScore == 4.5 || realScore == 6 || realScore == 7.5 || realScore == 9){
                 enterStore();
             }
         }
@@ -745,10 +746,10 @@ function enterStore(){
         [
              {
                 type: "image",
-                content: "window",
+                content: "panelStore",
                 offsetY: 0,
                 offsetX: 0,
-                contentScale: 1.85
+                contentScale: 1
             },
             {
                 type: "text",
@@ -1004,7 +1005,7 @@ function purchaseItem(item, price){
                 item.tint = '0xf75432';
                 shootUp = true;
 
-                cannon_btn = game.add.button(20, 410, 'cannonBtn');
+                cannon_btn = game.add.button(0, 410, 'cannonBtn');
                 cannon_btn.inputEnabled = true;
                 camera_btn.input.useHandCursor = true;
                 cannon_btn.events.onInputDown.add(shoot, this);

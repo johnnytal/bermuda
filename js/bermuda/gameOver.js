@@ -13,7 +13,9 @@ game_over.prototype = {
         
         var message = '';
         var best_message = '';
-     
+        
+        if (total == 'undefined' || total == undefined || total == null || total == NaN) total = 0;
+        
         if (best) best_message = '\nNew Hige score!';
         
         if (reason == 'lost') message = 'No one can escape!\nDistance passed: ' + score/1000 + 'M' + best_message + 
@@ -32,7 +34,7 @@ game_over.prototype = {
                     content: "window",
                     offsetY: 0,
                     offsetX: 0,
-                    contentScale: 1.2
+                    contentScale: 1.5
                 },
                 {
                     type: "text",
