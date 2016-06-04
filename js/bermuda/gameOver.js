@@ -6,7 +6,7 @@ game_over.prototype = {
     
     init: function(reason, score, best, total){
         loadMusic.play();
-        
+
         try{
             banner.show();
         } catch(e){}
@@ -16,7 +16,8 @@ game_over.prototype = {
      
         if (best) best_message = '\nNew Hige score!';
         
-        if (reason == 'lost') message = 'No one can escape!\nDistance passed: ' + score/1000 + 'M' + best_message;
+        if (reason == 'lost') message = 'No one can escape!\nDistance passed: ' + score/1000 + 'M' + best_message + 
+        '\nNetworth: ' + total + "$";
     
         else{ message = "B E R M U D A \n I S \n B E A T E N ! ! ! \n Y O U   W I N !"; } 
               

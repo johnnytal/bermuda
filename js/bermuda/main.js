@@ -19,6 +19,12 @@ var game_main = function(game){
     var scoreInterval;
     
     storeEntered = false;
+    shootUp = false;
+    phantomUp = false;
+    flipUp = false;
+    evadeUp = false;
+    speedUp = false;
+    miniUp = false;
 };
 
 game_main.prototype = {
@@ -42,12 +48,6 @@ game_main.prototype = {
 
         deco_group = this.add.group();
         
-        camera_btn = this.add.button(570, 5, 'cameraBtn');
-        camera_btn.inputEnabled = true;
-        camera_btn.input.useHandCursor = true;
-        camera_btn.events.onInputDown.add(takePhoto, this);
-        camera_btn.alpha = 0.7;
-        
         white = this.add.sprite(0, 0, 'white');
         white.alpha = 0;
  
@@ -61,15 +61,16 @@ game_main.prototype = {
         this.lightning.filters = [ this.game.add.filter('Glow') ];
         this.lightning.anchor.setTo(0.5, 0);
 
-        plane = this.add.sprite(150, 350, 'plane');
-        this.physics.enable(plane, Phaser.Physics.ARCADE);
-        plane.enableBody = true;
-        plane.anchor.setTo(0.2, 0.8);
-            
-        anim = plane.animations.add('walk');
-        anim.play(10, true);
+        blood = this.add.image(0,-17, 'blood');
+        blood.alpha = 0.3;
+  
+        camera_btn = this.add.button(570, 0, 'cameraBtn');
+        camera_btn.inputEnabled = true;
+        camera_btn.input.useHandCursor = true;
+        camera_btn.events.onInputDown.add(takePhoto, this);
+        camera_btn.alpha = 0.7;
        
-        window.onkeydown = function(event) { 
+        /*window.onkeydown = function(event) { 
             if (event.keyCode == 65){
                 turnPlane('right');
             }
@@ -82,8 +83,16 @@ game_main.prototype = {
              else if (event.keyCode == 70){
                 turnPlane('down');
             }
-        };
+        };*/
 
+        plane = this.add.sprite(150, 350, 'plane');
+        this.physics.enable(plane, Phaser.Physics.ARCADE);
+        plane.enableBody = true;
+        plane.anchor.setTo(0.2, 0.8);
+         
+        anim = plane.animations.add('walk');
+        anim.play(10, true);
+        
         plane.body.velocity.y = PLANE_VELOCITY;
         plane.body.velocity.x = PLANE_VELOCITY / 10;
         plane.angle = PLANE_ANGLE;
@@ -98,7 +107,8 @@ game_main.prototype = {
         modal = new gameModal(game);
 
         scoreLabel = this.add.text(75, 35, (score / 1000).toFixed(1) + ' M' , {
-            font: '17px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
+            font: '21px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
+            stroke: "0x000000", strokeThickness: 3
         });
         scoreLabel.alpha = 0.8; 
         scoreLabel.padding.set(10, 5);
@@ -107,34 +117,36 @@ game_main.prototype = {
         bestScore = localStorage.getItem("bermuda-bestScore");
         if (bestScore == null) bestScore = 0;
         
-        bestScoreLebal = this.add.text(20, 44, 'Best: ' + bestScore + ' M', {
+        bestScoreLebal = this.add.text(17, 44, 'Best: ' + bestScore + ' M', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestScoreLebal.alpha = 0.7;
         
-        evadeUpgradeLebal = game.add.text(390, 12, 'Evade: N/A', {
+        evadeUpgradeLebal = game.add.text(120, 8, 'Evade: N/A', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
-        evadeUpgradeLebal.alpha = 0.2;
+        evadeUpgradeLebal.alpha = 0.3;
 
-        flipUpgradeLebal = game.add.text(390, 33, 'Thurst: N/A', {
+        flipUpgradeLebal = game.add.text(120, 29, 'Thurst: N/A', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
-        flipUpgradeLebal.alpha = 0.2;
+        flipUpgradeLebal.alpha = 0.3;
         
-        phantomUpgradeLebal = game.add.text(390, 54, 'Phantom: N/A', {
+        phantomUpgradeLebal = game.add.text(120, 50, 'Phantom: N/A', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
-        phantomUpgradeLebal.alpha = 0.2;
+        phantomUpgradeLebal.alpha = 0.3;
 
-        netWorthLabel = this.add.text(320, 27, netWorth + "$", {
-            font: '20px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center'
+        netWorthLabel = this.add.text(320, 35, netWorth + "$", {
+            font: '22px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center',
+            stroke: "0x0f0000", strokeThickness: 2
         });
         netWorthLabel.anchor.set(0.5, 0.5);
         netWorthLabel.alpha = 0.9; 
         
-        photosLeftLabel = this.add.text(608, 44, photosToTake, {
-            font: '21px ' + font, fill: '#f4e4f7', fontWeight: 'normal', align: 'center'
+        photosLeftLabel = this.add.text(608, 39, photosToTake, {
+            font: '21px ' + font, fill: '#f4e4f7', fontWeight: 'normal', align: 'center', 
+            stroke: "0x000000", strokeThickness: 3
         });
         photosLeftLabel.anchor.set(0.5, 0.5);
         photosLeftLabel.padding.set(5, 5);
@@ -167,9 +179,6 @@ game_main.prototype = {
         this.createDeco();
         
         clickClock();
-        
-       /* blood = this.add.image(0,0, 'blood');
-        blood.alpha = 0.5;*/
         
         if (!this.game.device.desktop){
             try{ mc.destroy(); }catch(e){}
@@ -380,7 +389,7 @@ function gameOver(_plane, _enemy){ // kill player
     clearInterval(scoreInterval);
     clearInterval(clickInterval);
     
-    game.state.start('Game_over', false, false, 'lost', score, save_score());
+    game.state.start('Game_over', false, false, 'lost', score, save_score(), totalNetWorth);
 }
 
 function collide_terrain(_plane){
@@ -458,11 +467,23 @@ function explode(element){ // the explosion effect
 }
 
 function takePhoto(){
+    
     if (photosToTake > 0 && plane.alpha == 1){
+        
+        camera_btn.input.enabled = false;
+        camera_btn.tint = '0x636463';
+        setTimeout(function(){
+            camera_btn.input.enabled = true; 
+            camera_btn.tint = '0xffffff';
+        }, 1000);
+        
+        photosToTake--;
+        photosLeftLabel.text = photosToTake;
+        
+    
         tweenWhite = this.game.add.tween(white).to({ alpha: '0.2' }, 300, Phaser.Easing.Bounce.Out).start();
         tweenWhite.onComplete.add(function(){ 
-            photosToTake--;
-            photosLeftLabel.text = photosToTake;
+
             white.alpha = 0; 
             
             for (i = 0; i < enemies.length; i++) {
@@ -492,7 +513,9 @@ function alienTextTweeing(_i, _distance, _price, _name, _xPos, _yPos){
     "\n" + _price +  "$";
       
     var photoLabel = game.add.text(_xPos, _yPos,
-       alienText, {font: '22px ' + font, fill: 'white', fontWeight: 'normal', align: 'center'}
+       alienText, {font: '22px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
+       stroke: "0x0f0000", strokeThickness: 2
+       }
     );
     photoLabel.alpha = 0.8;
     
@@ -521,7 +544,7 @@ function create_rain(){ // make it rain
     emitter.width = game.world.width;
     emitter.angle = this.game.rnd.integerInRange(-20, 20);
 
-    emitter.makeParticles(['rain', 'rain2']);
+    emitter.makeParticles(['rain', 'rain2', 'rain3']);
 
     emitter.minParticleScale = 0.1;
     emitter.maxParticleScale = 0.4;
@@ -532,7 +555,7 @@ function create_rain(){ // make it rain
     emitter.minRotation = 0;
     emitter.maxRotation = 0;
 
-    emitter.start(false, 1600, 5, 0);
+    emitter.start(false, 1600, 7, 0);
 }
 
 game_main.prototype.create_lightning = function() { // the lightning effect
@@ -731,20 +754,21 @@ function enterStore(){
                 type: "text",
                 content: "Bermuda Upgrade Store",
                 fontFamily: font,
-                fontSize: 32,
+                fontSize: 30,
                 color: "0xf7f7f7",
                 offsetY: -200,
+                offsetX: -80,
                 stroke: "0x000000",
                 strokeThickness: 5
             },
             {
                 type: "text",
-                content: netWorth + "$",
+                content: netWorth + "$" + "\n(Photos: " + photosToTake + ")",
                 fontFamily: font,
-                fontSize: 26,
+                fontSize: 24,
                 color: "0xf7f7f7",
                 offsetY: -190,
-                offsetX: 195,
+                offsetX: 150,
                 stroke: "0x000000",
                 strokeThickness: 5
             },
@@ -815,7 +839,7 @@ function enterStore(){
                     offsetY: -100,
                     offsetX: 150,
                     callback: function () { 
-                        purchaseItem(this, 350);
+                        purchaseItem(this, 400);
                     }
                 },
                 
@@ -893,7 +917,7 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "5 photos - 350$",
+                    content: "5 photos - 400$",
                     offsetY: -130,
                     offsetX: 170,
                     fontFamily: font,
@@ -932,9 +956,12 @@ function enterStore(){
         game.add.tween(modal.getModalItem('store',n)).from( { x: 750 }, 650, Phaser.Easing.Linear.In, true);
     }
     
-    homeImg = modal.getModalItem('store',2);
-    replayImg = modal.getModalItem('store',3);
-
+    if (evadeUp) modal.getModalItem('store', 4).tint = '0xf75432';
+    if (phantomUp) modal.getModalItem('store', 5).tint = '0xf75432';
+    if (flipUp) modal.getModalItem('store', 6).tint = '0xf75432';
+    if (speedUp) modal.getModalItem('store', 7).tint = '0xf75432';
+    if (miniUp) modal.getModalItem('store', 8).tint = '0xf75432';
+    if (shootUp) modal.getModalItem('store', 9).tint = '0xf75432';  
 }
 
 function purchaseItem(item, price){
@@ -948,6 +975,7 @@ function purchaseItem(item, price){
             
             if (item.key == 'upEvade'){
                 item.tint = '0xf75432';
+                evadeUp = true;
                 enableUpgrade('evade');
                 
                 evadeUpgradeLebal.alpha = 0.8;
@@ -956,6 +984,7 @@ function purchaseItem(item, price){
     
             else if (item.key == 'upFlip'){
                 item.tint = '0xf75432';
+                flipUp = true;
                 enableUpgrade('flip');
                 
                 flipUpgradeLebal.alpha = 0.8;
@@ -964,6 +993,7 @@ function purchaseItem(item, price){
             
             else if (item.key == 'upPhantom'){
                 item.tint = '0xf75432';
+                phantomUp = true;
                 enableUpgrade('phantom');
                 
                 phantomUpgradeLebal.alpha = 0.8;
@@ -972,7 +1002,8 @@ function purchaseItem(item, price){
             
             else if (item.key == 'upShoot'){
                 item.tint = '0xf75432';
-                
+                shootUp = true;
+
                 cannon_btn = game.add.button(20, 410, 'cannonBtn');
                 cannon_btn.inputEnabled = true;
                 camera_btn.input.useHandCursor = true;
@@ -982,17 +1013,19 @@ function purchaseItem(item, price){
             
             else if (item.key == 'upSmall'){
                 item.tint = '0xf75432';
+                miniUp = true;
                 plane.scale.set(0.7, 0.7);
             }
             
             else if (item.key == 'upSpeed'){
                 item.tint = '0xf75432';
+                speedUp = true;
                 manuverFactorUp = 1.6;
             }
             
             netWorth -= price;
             netWorthLabel.text = netWorth + "$";
-            modal.getModalItem('store', 3).text = netWorthLabel.text;
+            modal.getModalItem('store', 3).text = netWorthLabel.text + "\n(Photos: " + photosToTake + ")";
         }
     }
 }

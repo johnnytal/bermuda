@@ -29,11 +29,13 @@ preloader.prototype = {
         this.game.load.image("bg","assets/bermuda/images/background.png");
         this.game.load.image("rain","assets/bermuda/images/rain.png");
         this.game.load.image("rain2","assets/bermuda/images/rain2.png");
+        this.game.load.image("rain3","assets/bermuda/images/rain3.png");
         this.game.load.image("fog1","assets/bermuda/images/fog.png");
         this.game.load.image("fog2","assets/bermuda/images/fog2.png");
         this.game.load.image("fog3","assets/bermuda/images/fog3.png");
         this.game.load.image("fog4","assets/bermuda/images/fog4.png");
         this.game.load.image("white","assets/bermuda/images/white.png");
+        this.game.load.image("blood","assets/bermuda/images/divider.png");
         
         this.game.load.image("ground_13","assets/bermuda/images/ground_13.png");
         this.game.load.image("ground_14","assets/bermuda/images/ground_14.png");
