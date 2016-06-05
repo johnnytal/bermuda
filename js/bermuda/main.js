@@ -19,12 +19,7 @@ var game_main = function(game){
     var scoreInterval;
     
     storeEntered = false;
-    shootUp = false;
-    phantomUp = false;
-    flipUp = false;
-    evadeUp = false;
-    speedUp = false;
-    miniUp = false;
+    var shootUp, miniUp, phantomUp, flipUp, evadeUp, speedUp;
 };
 
 game_main.prototype = {
@@ -34,12 +29,7 @@ game_main.prototype = {
     
     create: function(){
         
-        score = 0;
-        netWorth = 0;
-        totalNetWorth = 0;
-        timeFactor = 1;
-        manuverFactorUp = 1;
-        photosToTake = 10;
+        initGlobals();
         
         this.world.setBounds(0, 0, WIDTH, HEIGHT + 10);
         bg = this.add.tileSprite(0, 0, 640, 480, 'bg');
@@ -178,9 +168,7 @@ game_main.prototype = {
         this.create_thunder();
         this.createTerrain();
         this.createDeco();
-        
-        clickClock();
-        
+
         if (!this.game.device.desktop){
             try{ mc.destroy(); }catch(e){}
             
@@ -221,18 +209,22 @@ game_main.prototype = {
             shakesy = game.rnd.integerInRange(4, 10);
             game.add.tween(game.camera).to({ y: rndShake }, shakey_time, Phaser.Easing.Sinusoidal.InOut, false, 0, shakesy, true).start();
             
-            bg.tilePosition.x -= 3 + (timeFactor / 8); // roll the backgground image, increase to roll faster
+            var rollTime = 3 + (timeFactor / 9); // roll background images, increase to roll faster
+            
+            bg.tilePosition.x -= rollTime; 
             
             terrain_group.forEach(function(terr) {
-                terr.x -= 3 + (timeFactor / 8);
+                terr.x -= rollTime;
             }, this);
             
             deco_group.forEach(function(deco) {
-                deco.x -= 3 + (timeFactor / 8);
+                deco.x -= rollTime;
             }, this);
                 
             if(game.input.activePointer.isDown){ // when user press the mouse / taps
-    
+                if (plane.angle < -PLANE_ANGLE * 1.5){
+                    plane.angle += 0.5;
+                }   
             }
             else{ // when user release mouse
                 plane.body.velocity.y = ( PLANE_VELOCITY + 40 - (timeFactor * 2) ) * manuverFactorUp;
@@ -294,7 +286,7 @@ game_main.prototype = {
     },
     
     createTerrain: function(){
-        var time_to_next_terrain = game.rnd.integerInRange(8250, 17000) - (timeFactor * 35);
+        var time_to_next_terrain = game.rnd.integerInRange(10000, 20000) - (timeFactor * 100);
 
         var terrains = ['ground_13', 'ground_14', 'cave_lake_2', 'cave_large_rock_1', 
         'cave_stalactite_1', 'cave_stalactite_4', 'cave_platform_3', 'cave_platform_2', 'cave_platform_4'];
@@ -353,12 +345,6 @@ game_main.prototype = {
 function flyPlane(){
     plane.body.velocity.y = -(PLANE_VELOCITY * manuverFactorUp) * 2 - 40 + (timeFactor * 2) ;
     plane.body.velocity.x = -(PLANE_VELOCITY * manuverFactor * manuverFactorUp) / 5;
-
-    
-                
-    if (plane.angle < -PLANE_ANGLE * 1.5){
-        plane.angle += 0.5;
-    }   
 }
 
 function collide_enemies(enemy1, enemy2){ // kill enemies when they collide with each other
@@ -388,7 +374,7 @@ function gameOver(_plane, _enemy){ // kill player
     }catch(e){}
 
     clearInterval(scoreInterval);
-    clearInterval(clickInterval);
+    try{ clearInterval(clickInterval); } catch(e){}
     
     game.state.start('Game_over', false, false, 'lost', score, save_score(), totalNetWorth);
 }
@@ -424,12 +410,13 @@ function save_score(){ // if it's the best score ever, save it to local storage
 
 function create_enemy(){ // make a new enemy
     var index =  enemies.length;
-    
     var type;
-    if (score < 550) type = 2;
-    else if (score >= 550 && score < 850) type = game.rnd.integerInRange(1, 2);
-    else if (score >= 850 && score < 1700) type = game.rnd.integerInRange(1, 3);
-    else if (score >= 1700 && score < 2850) type = game.rnd.integerInRange(1, 4);
+    var enemyIntro = [600, 1000, 2000, 3000];
+    
+    if (score < enemyIntro[0]) type = 2;
+    else if (score >= enemyIntro[0] && score < enemyIntro[1]) type = game.rnd.integerInRange(1, 2);
+    else if (score >= enemyIntro[1] && score < enemyIntro[2]) type = game.rnd.integerInRange(1, 3);
+    else if (score >= enemyIntro[2] && score < enemyIntro[3]) type = game.rnd.integerInRange(1, 4);
     else { type = game.rnd.integerInRange(1, 5); }
 
     var locationX = game.rnd.integerInRange(WIDTH + 50, WIDTH + 100); // starting enemy's x location
@@ -650,7 +637,7 @@ Phaser.Filter.Glow.prototype.constructor = Phaser.Filter.Glow;
 
 function clickClock(){
     clickInterval = setInterval(function(){
-        if (timeFactor < 45){
+        if (timeFactor < 40){
             timeFactor++;
         }
     }, 4000);
@@ -718,15 +705,19 @@ function tweenTint(obj, startColor, endColor, time) {
 }
 
 function scoreInt(){
-    BASIC_SCORE = 100;
+    var BASIC_SCORE = 100;
+    
     scoreInterval = setInterval(function(){ // adds score (or 'distance') every 1000 ms
         if (!game.paused){
             score += BASIC_SCORE;
-            scoreLabel.text = (score / 1000).toFixed(1) + ' M';
-            
             var realScore = score / 1000;
-            if (realScore == 1.5 || realScore == 3 || realScore == 4.5 || realScore == 6 || realScore == 7.5 || realScore == 9){
-                enterStore();
+            
+            scoreLabel.text = realScore.toFixed(1) + ' M';
+
+            var storeTimes = [1.5, 3, 4.5, 6, 7.5, 9];
+            
+            for (n = 0; n < storeTimes.length; n++){
+                if (realScore == storeTimes[n]) enterStore();
             }
         }
     }, 2000);
@@ -734,7 +725,10 @@ function scoreInt(){
 
 function enterStore(){    
     clearInterval(scoreInterval);
-    clearInterval(clickInterval);
+    try{
+        clearInterval(clickInterval);
+    } catch(e){}
+    
     storeEntered = true;
     camera_btn.inputEnabled = false;
     
@@ -752,7 +746,7 @@ function enterStore(){
                 type: "text",
                 content: "",
                 fontFamily: font,
-                fontSize: 30,
+                fontSize: 32,
                 color: "0xf7f7f7",
                 offsetY: -200,
                 offsetX: -80,
@@ -761,9 +755,9 @@ function enterStore(){
             },
             {
                 type: "text",
-                content: netWorth + "$",
+                content: netWorth + " $",
                 fontFamily: font,
-                fontSize: 32,
+                fontSize: 34,
                 color: "0xf4fef4",
                 offsetY: -180,
                 offsetX: 130,
@@ -843,11 +837,11 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Evade - 900$",
+                    content: "Evade - 900 $",
                     offsetY: -180,
                     offsetX: -230,       
                     fontFamily: font,
-                    fontSize: 19,
+                    fontSize: 21,
                     color: "0xf7f7f7",
                     stroke: "0x000000",
                     strokeThickness: 4
@@ -855,11 +849,11 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Phantom - 4,300$",
+                    content: "Phantom - 4,300 $",
                     offsetY: -40,
                     offsetX: -230,       
                     fontFamily: font,
-                    fontSize: 19,
+                    fontSize: 21,
                     color: "0xf7f7f7",
                     stroke: "0x000000",
                     strokeThickness: 4
@@ -867,11 +861,11 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Thurst - 1,800$",
+                    content: "Thurst - 1,800 $",
                     offsetY: 100,
                     offsetX: -230,
                     fontFamily: font,
-                    fontSize: 19,
+                    fontSize: 21,
                     color: "0xf7f7f7",
                     stroke: "0x000000",
                     strokeThickness: 4
@@ -879,11 +873,11 @@ function enterStore(){
                 
                {
                     type: "text",
-                    content: "Speed - 2,000$",
+                    content: "Speed - 2,000 $",
                     offsetY: -180,
                     offsetX: -50,
                     fontFamily: font,
-                    fontSize: 19,
+                    fontSize: 21,
                     color: "0xf7f7f7",
                     stroke: "0x000000",
                     strokeThickness: 4
@@ -891,11 +885,11 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Minfy - 3,200$",
+                    content: "Minfy - 3,200 $",
                     offsetY: -40,
                     offsetX: -50,
                     fontFamily: font,
-                    fontSize: 19,
+                    fontSize: 21,
                     color: "0xf7f7f7",
                     stroke: "0x000000",
                     strokeThickness: 4
@@ -903,11 +897,11 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Cannon - 5,100$",
+                    content: "Cannon - 5,100 $",
                     offsetY: 100,
                     offsetX: -50,
                     fontFamily: font,
-                    fontSize: 20,
+                    fontSize: 21,
                     color: "0xf7f7f7",
                     stroke: "0x000000",
                     strokeThickness: 4
@@ -915,11 +909,11 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "5 photos - 400$" + " (" + photosToTake + ")",
+                    content: "5 photos - 400 $" + " (" + photosToTake + ")",
                     offsetY: -100,
                     offsetX: 130,
                     fontFamily: font,
-                    fontSize: 19,
+                    fontSize: 21,
                     color: "0xf7f7f7",
                     stroke: "0x000000",
                     strokeThickness: 4
@@ -1124,5 +1118,21 @@ function shoot(){
     bullet.enableBody = true;
     bullet.body.velocity.x = 600;
     bullet.body.gravity.y = 85;
+}
 
+function initGlobals(){
+    score = 0;
+    netWorth = 0;
+    totalNetWorth = 0;
+    timeFactor = 1;
+    manuverFactorUp = 1;
+    photosToTake = 10;
+    
+    storeEntered = false;
+    shootUp = false;
+    phantomUp = false;
+    flipUp = false;
+    evadeUp = false;
+    speedUp = false;
+    miniUp = false;
 }

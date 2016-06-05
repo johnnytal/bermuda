@@ -75,7 +75,7 @@ game_over.prototype = {
         modal.showModal("game_over");
         
         for (n=0; n<4; n++){
-            game.add.tween(modal.getModalItem('game_over',n)).from( { y: - 800 }, 500, Phaser.Easing.Linear.In, true);
+            game.add.tween(modal.getModalItem('game_over',n)).from( { y: - 800 }, 600, Phaser.Easing.Sinusoidal.InOut, true);
         }
         
         homeImg = modal.getModalItem('game_over',2);
