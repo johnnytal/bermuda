@@ -49,9 +49,7 @@ preloader.prototype = {
         this.game.load.image("cave_platform_2","assets/bermuda/images/cave_platform_2.png");
         this.game.load.image("cave_platform_3","assets/bermuda/images/cave_platform_3.png");
         this.game.load.image("cave_platform_4","assets/bermuda/images/cave_platform_4.png");
-        
-        this.game.load.image("blood","assets/bermuda/images/blood.png");
-        
+
         this.game.load.image("deco11","assets/bermuda/images/deco11.png");
         this.game.load.image("deco10","assets/bermuda/images/deco10.png");
         this.game.load.image("deco9","assets/bermuda/images/deco9.png");
@@ -63,6 +61,10 @@ preloader.prototype = {
         this.game.load.image("deco3","assets/bermuda/images/deco3.png");
         this.game.load.spritesheet("deco2","assets/bermuda/images/deco2.png", 37, 78);
         this.game.load.image("deco1","assets/bermuda/images/deco1.png");
+        
+        this.game.load.image("medal","assets/bermuda/images/flat_medal4.png");
+        this.game.load.image("small_bg","assets/bermuda/images/small_bg.png");
+        this.game.load.image("playBtn","assets/bermuda/images/playBtn.png");
         
         this.game.load.image("cannonBtn", "assets/bermuda/images/cannon.png");
         this.game.load.image("cameraBtn","assets/bermuda/images/cameraBtn.png");

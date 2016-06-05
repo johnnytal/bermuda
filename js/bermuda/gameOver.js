@@ -18,8 +18,8 @@ game_over.prototype = {
         
         if (best) best_message = '\nNew Hige score!';
         
-        if (reason == 'lost') message = 'No one can escape!\nDistance: ' + score/1000 + 'M' + best_message + 
-        '\nNetworth: ' + total + "$";
+        if (reason == 'lost') message = 'No one can escape!\nDistance: ' + score/1000 + ' M' + best_message + 
+        '\nNetworth: ' + total + " $";
     
         else{ message = "B E R M U D A \n I S \n B E A T E N ! ! ! \n Y O U   W I N !"; } 
               
@@ -34,7 +34,7 @@ game_over.prototype = {
                     content: "window",
                     offsetY: 0,
                     offsetX: 0,
-                    contentScale: 1.5
+                    contentScale: 1.65
                 },
                 {
                     type: "text",

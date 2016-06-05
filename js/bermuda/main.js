@@ -3,6 +3,7 @@ var game_main = function(game){
     PLANE_ANGLE = -11.5;
 
     enemies = [];
+    storeTimes = [2, 4, 6, 8];
     
     score = 0;
     netWorth = 0;
@@ -53,7 +54,9 @@ game_main.prototype = {
         this.lightning.anchor.setTo(0.5, 0);
 
         blood = this.add.image(0, 0, 'blood');
-        blood.alpha = 0.2;
+        blood.alpha = 0.3;
+        small_bg = this.add.image(2, 0, 'small_bg');
+        small_bg.alpha = 0.2;
   
         camera_btn = this.add.button(568, 0, 'cameraBtn');
         camera_btn.inputEnabled = true;
@@ -97,8 +100,8 @@ game_main.prototype = {
 
         modal = new gameModal(game);
 
-        scoreLabel = this.add.text(75, 32, (score / 1000).toFixed(1) + ' M' , {
-            font: '21px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
+        scoreLabel = this.add.text(75, 30, (score / 1000).toFixed(1) + ' M' , {
+            font: '23px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
             stroke: "0x000000", strokeThickness: 3
         });
         scoreLabel.alpha = 0.8; 
@@ -108,10 +111,11 @@ game_main.prototype = {
         bestScore = localStorage.getItem("bermuda-bestScore");
         if (bestScore == null) bestScore = 0;
         
-        bestScoreLebal = this.add.text(17, 41, 'Best: ' + bestScore + ' M', {
-            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+        bestScoreLebal = this.add.text(30, 47, bestScore + ' M', {
+            font: '17px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestScoreLebal.alpha = 0.7;
+        this.add.image(15, 47, 'medal').alpha = 0.8;
         
         evadeUpgradeLebal = game.add.text(120, 8, 'Evade: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
@@ -123,13 +127,13 @@ game_main.prototype = {
         });
         flipUpgradeLebal.alpha = 0.3;
         
-        phantomUpgradeLebal = game.add.text(120, 50, 'Phantom: ?', {
+        phantomUpgradeLebal = game.add.text(120, 50, 'Stealth: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         phantomUpgradeLebal.alpha = 0.3;
 
-        netWorthLabel = this.add.text(320, 35, netWorth + "$", {
-            font: '22px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center',
+        netWorthLabel = this.add.text(320, 31, netWorth + "$", {
+            font: '26px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center',
             stroke: "0x0f0000", strokeThickness: 2
         });
         netWorthLabel.anchor.set(0.5, 0.5);
@@ -223,7 +227,7 @@ game_main.prototype = {
                 
             if(game.input.activePointer.isDown){ // when user press the mouse / taps
                 if (plane.angle < -PLANE_ANGLE * 1.5){
-                    plane.angle += 0.5;
+                    plane.angle += 0.35;
                 }   
             }
             else{ // when user release mouse
@@ -287,7 +291,7 @@ game_main.prototype = {
     
     createTerrain: function(){
         var time_to_next_terrain = game.rnd.integerInRange(10000, 20000) - (timeFactor * 100);
-
+    
         var terrains = ['ground_13', 'ground_14', 'cave_lake_2', 'cave_large_rock_1', 
         'cave_stalactite_1', 'cave_stalactite_4', 'cave_platform_3', 'cave_platform_2', 'cave_platform_4'];
         
@@ -373,8 +377,7 @@ function gameOver(_plane, _enemy){ // kill player
         _enemy.kill();
     }catch(e){}
 
-    clearInterval(scoreInterval);
-    try{ clearInterval(clickInterval); } catch(e){}
+    clearInts();
     
     game.state.start('Game_over', false, false, 'lost', score, save_score(), totalNetWorth);
 }
@@ -392,9 +395,9 @@ function collide_terrain(_plane){
         _plane.kill();
     }catch(e){}
 
-    clearInterval(scoreInterval);
-    clearInterval(clickInterval);
     
+    clearInts();
+
     game.state.start('Game_over', false, false, 'lost', score, save_score());    
 }
 
@@ -519,9 +522,9 @@ function alienTextTweeing(_i, _distance, _price, _name, _xPos, _yPos){
             totalNetWorth += _price;
             netWorthLabel.text = netWorth + "$";
             tween = this.game.add.tween(netWorthLabel.scale)
-            .to({ x: 1.35, y: 1.35 }, 400, Phaser.Easing.Linear.InOut)
+            .to({ x: 1.25, y: 1.25 }, 300, Phaser.Easing.Linear.InOut)
         .start();   
-         tween.yoyo(true, 250);
+         tween.yoyo(true, 200);
         }); 
     },500);
 }
@@ -714,8 +717,6 @@ function scoreInt(){
             
             scoreLabel.text = realScore.toFixed(1) + ' M';
 
-            var storeTimes = [1.5, 3, 4.5, 6, 7.5, 9];
-            
             for (n = 0; n < storeTimes.length; n++){
                 if (realScore == storeTimes[n]) enterStore();
             }
@@ -724,10 +725,7 @@ function scoreInt(){
 }
 
 function enterStore(){    
-    clearInterval(scoreInterval);
-    try{
-        clearInterval(clickInterval);
-    } catch(e){}
+    clearInts();
     
     storeEntered = true;
     camera_btn.inputEnabled = false;
@@ -760,7 +758,7 @@ function enterStore(){
                 fontSize: 34,
                 color: "0xf4fef4",
                 offsetY: -180,
-                offsetX: 130,
+                offsetX: 160,
                 stroke: "0x000000",
                 strokeThickness: 7
             },
@@ -770,6 +768,7 @@ function enterStore(){
                     content: "upEvade",
                     offsetY: -140,
                     offsetX: -230,
+                    alpha: '0.4',
                     callback: function () { 
                         purchaseItem(this, 900);
                     }
@@ -799,7 +798,7 @@ function enterStore(){
                     type: "image",
                     content: "upSpeed",
                     offsetY: -140,
-                    offsetX: -50,
+                    offsetX: -20,
                     callback: function () { 
                         purchaseItem(this, 2000);
                     }
@@ -809,7 +808,7 @@ function enterStore(){
                     type: "image",
                     content: "upSmall",
                     offsetY: 0,
-                    offsetX: -50,
+                    offsetX: -20,
                     callback: function () { 
                         purchaseItem(this, 3200);
                     }
@@ -819,7 +818,7 @@ function enterStore(){
                     type: "image",
                     content: "upShoot",
                     offsetY: 140,
-                    offsetX: -50,
+                    offsetX: -20,
                     callback: function () { 
                         purchaseItem(this, 5100);
                     }
@@ -829,7 +828,7 @@ function enterStore(){
                     type: "image",
                     content: "upCamera",
                     offsetY: -60,
-                    offsetX: 130,
+                    offsetX: 160,
                     callback: function () { 
                         purchaseItem(this, 400);
                     }
@@ -849,7 +848,7 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Phantom - 4,300 $",
+                    content: "Stealth - 4,300 $",
                     offsetY: -40,
                     offsetX: -230,       
                     fontFamily: font,
@@ -873,9 +872,9 @@ function enterStore(){
                 
                {
                     type: "text",
-                    content: "Speed - 2,000 $",
+                    content: "Turboprop - 2,000 $",
                     offsetY: -180,
-                    offsetX: -50,
+                    offsetX: -20,
                     fontFamily: font,
                     fontSize: 21,
                     color: "0xf7f7f7",
@@ -885,9 +884,9 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Minfy - 3,200 $",
+                    content: "Micrify - 3,200 $",
                     offsetY: -40,
-                    offsetX: -50,
+                    offsetX: -20,
                     fontFamily: font,
                     fontSize: 21,
                     color: "0xf7f7f7",
@@ -897,9 +896,9 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "Cannon - 5,100 $",
+                    content: "Browning M1919 - 5,100 $",
                     offsetY: 100,
-                    offsetX: -50,
+                    offsetX: -20,
                     fontFamily: font,
                     fontSize: 21,
                     color: "0xf7f7f7",
@@ -909,9 +908,9 @@ function enterStore(){
                 
                 {
                     type: "text",
-                    content: "5 photos - 400 $" + " (" + photosToTake + ")",
+                    content: "+5 film - 400 $" + " (" + photosToTake + ")",
                     offsetY: -100,
-                    offsetX: 130,
+                    offsetX: 160,
                     fontFamily: font,
                     fontSize: 21,
                     color: "0xf7f7f7",
@@ -922,10 +921,9 @@ function enterStore(){
                 
             {
                 type: "image",
-                content: "replay",
-                offsetY: 120,
-                offsetX: 130,
-                contentScale: 1.3,
+                content: "playBtn",
+                offsetY: 140,
+                offsetX: 225,
                 callback: function () { 
                     clickSfx.play();
                     scoreInt();
@@ -947,7 +945,14 @@ function enterStore(){
     
     for (n = 0; n < 19; n++){
         game.add.tween(modal.getModalItem('store',n)).from( { x: 750 }, 650, Phaser.Easing.Linear.In, true);
+        
     }
+    
+    for (n = 4; n < 10; n++){
+        modal.getModalItem('store',n).alpha = '0.7';
+    }
+    
+   tweenTint( modal.getModalItem('store',1), 0x443300, 0x220022, 3500);
     
     if (evadeUp) modal.getModalItem('store', 4).tint = '0xf75432';
     if (phantomUp) modal.getModalItem('store', 5).tint = '0xf75432';
@@ -991,7 +996,7 @@ function purchaseItem(item, price){
                 enableUpgrade('phantom');
                 
                 phantomUpgradeLebal.alpha = 0.8;
-                phantomUpgradeLebal.text = "Phantom: Pan right";
+                phantomUpgradeLebal.text = "Stealth: Pan right";
             }
             
             else if (item.key == 'upShoot'){
@@ -1014,7 +1019,7 @@ function purchaseItem(item, price){
             else if (item.key == 'upSpeed'){
                 item.tint = '0xf75432';
                 speedUp = true;
-                manuverFactorUp = 1.6;
+                manuverFactorUp = 1.5;
             }
             
             netWorth -= price;
@@ -1135,4 +1140,12 @@ function initGlobals(){
     evadeUp = false;
     speedUp = false;
     miniUp = false;
+}
+
+function clearInts(){
+    clearInterval(scoreInterval);
+    
+    try{
+        clearInterval(clickInterval);
+    } catch(e){}
 }
