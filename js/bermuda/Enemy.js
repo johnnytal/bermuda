@@ -66,5 +66,5 @@ Enemy.prototype.update = function() { // make the enemy follow the plane
             this.enemy.body.gravity.y = -(Math.abs(this.enemy.body.gravity.y));
         }
     }
-    
+      
 };

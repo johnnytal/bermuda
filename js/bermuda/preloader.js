@@ -3,7 +3,7 @@ var preloader = function(game){};
 preloader.prototype = {
     preload: function(){ 
         // create progress % text
-        this.add.image(0,0,'1024x1024');
+        this.add.image(0, 0, '1024x1024');
         
         font = 'Creepster';
 
@@ -62,7 +62,8 @@ preloader.prototype = {
         this.game.load.spritesheet("deco2","assets/bermuda/images/deco2.png", 37, 78);
         this.game.load.image("deco1","assets/bermuda/images/deco1.png");
         
-        this.game.load.image("medal","assets/bermuda/images/flat_medal4.png");
+        this.game.load.image("medal1","assets/bermuda/images/medal1.png");
+        this.game.load.image("medal2","assets/bermuda/images/medal2.png");
         this.game.load.image("small_bg","assets/bermuda/images/small_bg.png");
         this.game.load.image("playBtn","assets/bermuda/images/playBtn.png");
         
@@ -71,9 +72,6 @@ preloader.prototype = {
         this.game.load.image("upCamera","assets/bermuda/images/upCamera.png");
         this.game.load.image("bullet","assets/bermuda/images/bullet.png");
         
-        /*this.game.load.image("scary1","assets/bermuda/images/teddy.png");
-        this.game.load.image("scary2","assets/bermuda/images/skeleton.png");*/
-
         this.game.load.image("enemy1", "assets/bermuda/images/alien1.png");
         this.game.load.image("enemy2", "assets/bermuda/images/alien2.png");
         this.game.load.image("enemy3", "assets/bermuda/images/alien3.png");
@@ -96,49 +94,31 @@ preloader.prototype = {
         this.game.load.audio('thunder2', 'assets/bermuda/audio/thunder2.mp3'); 
         this.game.load.audio('thunder3', 'assets/bermuda/audio/thunder3.mp3'); 
         this.game.load.audio('thunder4', 'assets/bermuda/audio/thunder4.mp3'); 
+        this.game.load.audio('loadMusic', 'assets/bermuda/audio/loadMusic.mp3'); 
     },
     
     create: function(){
-        try{
-            loadMusic.stop();   
-        }catch(e){}
-        
+
         loadMusic = game.add.audio('loadMusic').play();
         
         bg = this.add.tileSprite(0, 0, 640, 480, 'bg');
         plane = this.add.sprite(150, 350, 'plane');
 
         game.add.tween(plane).from( { x: - 500 }, 1000, Phaser.Easing.Sinusoidal.InOut, true);
-       
-        titleText1 = this.add.text(75, 25, "E S C A P E", {
-            font: '40px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center'
-        });
-        titleText2 = this.add.text(260, 25, "F R O M", {
-            font: '40px ' + font, fill: '#f4f7f7', fontWeight: 'normal', align: 'center'
-        });
-        titleText3 = this.add.text(400, 25, "B E R M U D A", {
-            font: '40px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
-        });
+
         
-        game.add.tween(titleText1).from( { y: - 500 }, 250, Phaser.Easing.Sinusoidal.InOut, true);
+       /* game.add.tween(titleText1).from( { y: - 500 }, 250, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(titleText2).from( { y: - 500 }, 600, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(titleText3).from( { y: - 500 }, 1000, Phaser.Easing.Sinusoidal.InOut, true);
 
         titleText1.setShadow(3, 3, 'rgba(50,0,50,0.7)', 5);
         titleText2.setShadow(3, 3, 'rgba(50,0,50,0.7)', 5);
-        titleText3.setShadow(3, 3, 'rgba(50,0,50,0.7)', 5);
-        
-        instructionText = this.add.text(125, 87, "-  Press to fly down  - \n  -  Release to fly up  - \n  -  Escape the UFOs!  - \n -  Don't go off screen!  - \n\n * Fly for 10 Miles to escape Bermuda! *" , {
-            font: '24px ' + font, fill: 'lightgrey', fontWeight: 'normal', align: 'center'
-        });
-        
-        startText = this.add.text(164, 287, 'Tap anywhere to begin!', {
-            font: '34px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center'
-        });
+        titleText3.setShadow(3, 3, 'rgba(50,0,50,0.7)', 5);*/
+
     }, 
     
     update: function(){
-        bg.tilePosition.x -= 4.5;
+        bg.tilePosition.x -= 0.5;
         
         if(game.input.activePointer.isDown){
             this.game.state.start("Game"); 

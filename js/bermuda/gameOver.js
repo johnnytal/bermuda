@@ -11,17 +11,26 @@ game_over.prototype = {
             banner.show();
         } catch(e){}
         
+        var factor = 1;
         var message = '';
-        var best_message = '';
+        //var best_message = '';
         
         if (total == 'undefined' || total == undefined || total == null || total == NaN) total = 0;
         
-        if (best) best_message = '\nNew Hige score!';
+        /*if (best) {
+            best_message = '\nNew Hige score!';
+            factor = 1.1;
+        }*/
         
-        if (reason == 'lost') message = 'No one can escape!\nDistance: ' + score/1000 + ' M' + best_message + 
-        '\nNetworth: ' + total + " $";
+        if (reason == 'lost') {
+            message = 'No one can escape!\nDistance: ' + score.toFixed(1) + ' M' +
+            '\nNetworth: ' + total + " $";
+        }
     
-        else{ message = "B E R M U D A \n I S \n B E A T E N ! ! ! \n Y O U   W I N !"; } 
+        else{ 
+            message = "B E R M U D A \n I S \n B E A T E N ! ! ! \n Y O U   W I N !" + '\nNetworth: ' + total + " $"; 
+            factor = 1.2;
+        } 
               
         modal.createModal({
             type:"game_over",
@@ -34,7 +43,7 @@ game_over.prototype = {
                     content: "window",
                     offsetY: 0,
                     offsetX: 0,
-                    contentScale: 1.65
+                    contentScale: 1.65 * factor
                 },
                 {
                     type: "text",

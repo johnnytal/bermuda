@@ -1,9 +1,9 @@
 var game_main = function(game){
-    PLANE_VELOCITY = -190; // change to make plane slower or faster
+    PLANE_VELOCITY = -170; // change to make plane slower or faster
     PLANE_ANGLE = -11.5;
 
     enemies = [];
-    storeTimes = [2, 4, 6, 8];
+    storeTimes = [20, 40, 60, 80, 100];
     
     score = 0;
     netWorth = 0;
@@ -15,11 +15,10 @@ var game_main = function(game){
     manuverFactorUp = 1;
     
     photosToTake = 10;
-    
-    var inter;
-    var scoreInterval;
-    
+
     storeEntered = false;
+    
+    var scoreInterval;
     var shootUp, miniUp, phantomUp, flipUp, evadeUp, speedUp;
 };
 
@@ -34,7 +33,7 @@ game_main.prototype = {
         
         this.world.setBounds(0, 0, WIDTH, HEIGHT + 10);
         bg = this.add.tileSprite(0, 0, 640, 480, 'bg');
-        bg.alpha = 0.7;
+        bg.alpha = 0.9;
         bg.inputEnabled = true;
         bg.events.onInputDown.add(flyPlane, this);
 
@@ -53,16 +52,21 @@ game_main.prototype = {
         this.lightning.filters = [ this.game.add.filter('Glow') ];
         this.lightning.anchor.setTo(0.5, 0);
 
-        blood = this.add.image(0, 0, 'blood');
-        blood.alpha = 0.3;
-        small_bg = this.add.image(2, 0, 'small_bg');
-        small_bg.alpha = 0.2;
-  
-        camera_btn = this.add.button(568, 0, 'cameraBtn');
+        this.add.image(0, 2, 'blood').alpha = 0.5;
+        this.add.image(2, 0, 'small_bg').alpha = 0.1;
+        this.add.image(87, 0, 'small_bg').alpha = 0.1;
+
+        camera_btn = this.add.button(563, 2, 'cameraBtn');
         camera_btn.inputEnabled = true;
         camera_btn.input.useHandCursor = true;
         camera_btn.events.onInputDown.add(takePhoto, this);
         camera_btn.alpha = 0.7;
+        
+        shoot_btn = game.add.button(0, 410, 'cannonBtn');
+        shoot_btn.inputEnabled = false;
+        shoot_btn.events.onInputDown.add(shoot, this);
+        shoot_btn.alpha = 0.9;
+        shoot_btn.visible = false;
        
         /*window.onkeydown = function(event) { 
             if (event.keyCode == 65){
@@ -100,7 +104,7 @@ game_main.prototype = {
 
         modal = new gameModal(game);
 
-        scoreLabel = this.add.text(75, 30, (score / 1000).toFixed(1) + ' M' , {
+        scoreLabel = this.add.text(75, 30, score.toFixed(1) + ' M' , {
             font: '23px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
             stroke: "0x000000", strokeThickness: 3
         });
@@ -111,23 +115,41 @@ game_main.prototype = {
         bestScore = localStorage.getItem("bermuda-bestScore");
         if (bestScore == null) bestScore = 0;
         
-        bestScoreLebal = this.add.text(30, 47, bestScore + ' M', {
+        bestNet = localStorage.getItem("bermuda-bestNet");
+        if (bestNet == null) bestNet = 0;
+        
+        bestScoreLebal = this.add.text(25, 47, bestScore + ' M', {
             font: '17px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestScoreLebal.alpha = 0.7;
-        this.add.image(15, 47, 'medal').alpha = 0.8;
+        this.add.image(10, 47, 'medal1').alpha = 0.8;
         
-        evadeUpgradeLebal = game.add.text(120, 8, 'Evade: ?', {
+        totalNetLabel = this.add.text(150, 30, totalNetWorth + ' $' , {
+            font: '21px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
+            stroke: "0x000000", strokeThickness: 3
+        });
+        totalNetLabel.alpha = 0.8; 
+        totalNetLabel.padding.set(10, 5);
+        totalNetLabel.anchor.set(1, 0.5);
+        
+        bestNetLebal = this.add.text(115, 47, bestNet + ' $', {
+            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+        });
+        bestNetLebal.alpha = 0.7;
+        bestNetLebal.padding.set(10, 5);
+        this.add.image(95, 47, 'medal2').alpha = 0.8;
+        
+        evadeUpgradeLebal = game.add.text(380, 4, 'Evade: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         evadeUpgradeLebal.alpha = 0.3;
 
-        flipUpgradeLebal = game.add.text(120, 29, 'Thurst: ?', {
+        flipUpgradeLebal = game.add.text(380, 25, 'Thurst: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         flipUpgradeLebal.alpha = 0.3;
         
-        phantomUpgradeLebal = game.add.text(120, 50, 'Stealth: ?', {
+        phantomUpgradeLebal = game.add.text(380, 46, 'Stealth: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         phantomUpgradeLebal.alpha = 0.3;
@@ -139,7 +161,7 @@ game_main.prototype = {
         netWorthLabel.anchor.set(0.5, 0.5);
         netWorthLabel.alpha = 0.9; 
         
-        photosLeftLabel = this.add.text(608, 39, photosToTake, {
+        photosLeftLabel = this.add.text(603, 41, photosToTake, {
             font: '21px ' + font, fill: '#f4e4f7', fontWeight: 'normal', align: 'center', 
             stroke: "0x000000", strokeThickness: 3
         });
@@ -206,23 +228,42 @@ game_main.prototype = {
     update: function(){ 
         if (!storeEntered){  
             if (!plane.alive) gameOver(); 
-            if (score/1000 == 10) game.state.start('Game_over', false, false, 'won', score, save_score(), totalNetWorth);
-    
+            if (score == 120){   
+                enemies = [];
+                music.stop();
+                
+                enemy_group.forEach(function(e) {
+                    e.kill();
+                }, this);
+                    
+                try{
+                    explode(_plane);
+                    _plane.kill();
+                    _enemy.kill();
+                }catch(e){}
+            
+                clearInts();
+                
+                game.state.start('Game_over', false, false, 'win', score, save_score(), totalNetWorth);
+            }
+            
             rndShake = game.rnd.integerInRange(1, 5);
             shakey_time = game.rnd.integerInRange(20, 100);
             shakesy = game.rnd.integerInRange(4, 10);
             game.add.tween(game.camera).to({ y: rndShake }, shakey_time, Phaser.Easing.Sinusoidal.InOut, false, 0, shakesy, true).start();
             
-            var rollTime = 3 + (timeFactor / 9); // roll background images, increase to roll faster
+            var rollTime = 3 + (timeFactor / 12); // roll background images, increase to roll faster
             
             bg.tilePosition.x -= rollTime; 
             
             terrain_group.forEach(function(terr) {
                 terr.x -= rollTime;
+                if (terr.x < -500) deco.destroy();
             }, this);
             
             deco_group.forEach(function(deco) {
                 deco.x -= rollTime;
+                if (deco.x < -500) deco.destroy();
             }, this);
                 
             if(game.input.activePointer.isDown){ // when user press the mouse / taps
@@ -232,7 +273,7 @@ game_main.prototype = {
             }
             else{ // when user release mouse
                 plane.body.velocity.y = ( PLANE_VELOCITY + 40 - (timeFactor * 2) ) * manuverFactorUp;
-                plane.body.velocity.x = PLANE_VELOCITY / 10 * manuverFactor * manuverFactorUp;
+                plane.body.velocity.x = PLANE_VELOCITY / 10  * manuverFactor * manuverFactorUp;
                 
                 if (plane.angle > PLANE_ANGLE){
                     plane.angle -= 0.3;
@@ -248,6 +289,10 @@ game_main.prototype = {
                     }
                     
                     this.physics.arcade.collide(enemy_group, enemy_group, collide_enemies, null, this); // when enemies collide
+                }
+                
+                else if( !enemies[i].isAlive || enemies[i].body.x < -150 || storeEntered){
+                    enemies[i].destroy();
                 }
             }
            
@@ -290,7 +335,7 @@ game_main.prototype = {
     },
     
     createTerrain: function(){
-        var time_to_next_terrain = game.rnd.integerInRange(10000, 20000) - (timeFactor * 100);
+        var time_to_next_terrain = game.rnd.integerInRange(10000, 20000) - (timeFactor * 125);
     
         var terrains = ['ground_13', 'ground_14', 'cave_lake_2', 'cave_large_rock_1', 
         'cave_stalactite_1', 'cave_stalactite_4', 'cave_platform_3', 'cave_platform_2', 'cave_platform_4'];
@@ -347,7 +392,7 @@ game_main.prototype = {
 };
 
 function flyPlane(){
-    plane.body.velocity.y = -(PLANE_VELOCITY * manuverFactorUp) * 2 - 40 + (timeFactor * 2) ;
+    plane.body.velocity.y = -(( PLANE_VELOCITY + 40 - (timeFactor * 2) ) * manuverFactorUp) * 2 ;
     plane.body.velocity.x = -(PLANE_VELOCITY * manuverFactor * manuverFactorUp) / 5;
 }
 
@@ -402,10 +447,16 @@ function collide_terrain(_plane){
 }
 
 function save_score(){ // if it's the best score ever, save it to local storage
-    if ((score/1000) > bestScore || bestScore > 49){
-        localStorage.setItem( "bermuda-bestScore", score/1000);
+    if (score > bestScore){
+        localStorage.setItem( "bermuda-bestScore", score.toFixed(1));
         return true;
     }
+    
+    else if (totalNetWorth > bestNet){
+        localStorage.setItem( "bermuda-bestNet", totalNetWorth);
+        return true;    
+    }
+    
     else{
         return false;
     }
@@ -414,7 +465,7 @@ function save_score(){ // if it's the best score ever, save it to local storage
 function create_enemy(){ // make a new enemy
     var index =  enemies.length;
     var type;
-    var enemyIntro = [600, 1000, 2000, 3000];
+    var enemyIntro = [8, 12, 24, 32];
     
     if (score < enemyIntro[0]) type = 2;
     else if (score >= enemyIntro[0] && score < enemyIntro[1]) type = game.rnd.integerInRange(1, 2);
@@ -428,7 +479,7 @@ function create_enemy(){ // make a new enemy
     var velocityX = game.rnd.integerInRange(-70, -140); // enemy's horizontal speed
     var gravityY = game.rnd.integerInRange(20, 60) + (timeFactor * 7); // enemy's vertical gravity. increase values to make game more difficult
     
-    var time_to_next_enemy = game.rnd.integerInRange(3750 , 7100) - (timeFactor * 100); // how long it takes for new enemies to appear
+    var time_to_next_enemy = game.rnd.integerInRange(3750 , 7100) - (timeFactor * 125); // how long it takes for new enemies to appear
     
     enemy_timer = game.time.events.add(time_to_next_enemy, function(){
         if (!storeEntered){
@@ -520,7 +571,10 @@ function alienTextTweeing(_i, _distance, _price, _name, _xPos, _yPos){
         tweenAlienText.onComplete.add(function(){ 
             photoLabel.text = "";
             totalNetWorth += _price;
+            
             netWorthLabel.text = netWorth + "$";
+            totalNetLabel.text = totalNetWorth + "$";
+            
             tween = this.game.add.tween(netWorthLabel.scale)
             .to({ x: 1.25, y: 1.25 }, 300, Phaser.Easing.Linear.InOut)
         .start();   
@@ -640,10 +694,10 @@ Phaser.Filter.Glow.prototype.constructor = Phaser.Filter.Glow;
 
 function clickClock(){
     clickInterval = setInterval(function(){
-        if (timeFactor < 40){
+        if (timeFactor < 50){
             timeFactor++;
         }
-    }, 4000);
+    }, 4500);
 }
 
 function create_fog(){
@@ -708,24 +762,24 @@ function tweenTint(obj, startColor, endColor, time) {
 }
 
 function scoreInt(){
-    var BASIC_SCORE = 100;
-    
-    scoreInterval = setInterval(function(){ // adds score (or 'distance') every 1000 ms
-        if (!game.paused){
-            score += BASIC_SCORE;
-            var realScore = score / 1000;
-            
-            scoreLabel.text = realScore.toFixed(1) + ' M';
+    scoreInterval = setInterval(function(){
+        score += 0.25;
+        
+        scoreLabel.text = score.toFixed(1) + ' M';
 
-            for (n = 0; n < storeTimes.length; n++){
-                if (realScore == storeTimes[n]) enterStore();
-            }
-        }
-    }, 2000);
+        for (n = 0; n < storeTimes.length; n++){
+            if (score == storeTimes[n]) enterStore();
+        }   
+
+    }, 500);
 }
 
 function enterStore(){    
     clearInts();
+    
+    enemy_group.forEach(function(e) {
+        e.kill();
+    }, this);
     
     storeEntered = true;
     camera_btn.inputEnabled = false;
@@ -987,7 +1041,7 @@ function purchaseItem(item, price){
                 enableUpgrade('flip');
                 
                 flipUpgradeLebal.alpha = 0.8;
-                flipUpgradeLebal.text = "Thurst: Swipe left/right";
+                flipUpgradeLebal.text = "Thurst: Pan left/right";
             }
             
             else if (item.key == 'upPhantom'){
@@ -996,18 +1050,15 @@ function purchaseItem(item, price){
                 enableUpgrade('phantom');
                 
                 phantomUpgradeLebal.alpha = 0.8;
-                phantomUpgradeLebal.text = "Stealth: Pan right";
+                phantomUpgradeLebal.text = "Stealth: Swipe right";
             }
             
             else if (item.key == 'upShoot'){
                 item.tint = '0xf75432';
                 shootUp = true;
 
-                cannon_btn = game.add.button(0, 410, 'cannonBtn');
-                cannon_btn.inputEnabled = true;
-                camera_btn.input.useHandCursor = true;
-                cannon_btn.events.onInputDown.add(shoot, this);
-                cannon_btn.alpha = 0.9;
+                shoot_btn.inputEnabled = true;
+                shoot_btn.visible = true;
             }
             
             else if (item.key == 'upSmall'){
@@ -1062,13 +1113,13 @@ function enableUpgrade(which){
     else if (which == "flip"){
 
         if (!this.game.device.desktop){        
-            mc.on("swiperight", function(ev) {
+            mc.on("panright", function(ev) {
                 if (!ev.handled){
                     turnPlane('right');
                 };   
             });
             
-            mc.on("swipeleft", function(ev) {
+            mc.on("panleft", function(ev) {
                  if(!ev.handled){
                      turnPlane('left');
                  };
@@ -1090,7 +1141,7 @@ function enableUpgrade(which){
      
      else if (which == "phantom"){
          if (!this.game.device.desktop){        
-            mc.on("panright", function(ev) {
+            mc.on("swiperight", function(ev) {
                 if (!ev.handled){
                     phantomize();   
                 };   
@@ -1123,6 +1174,15 @@ function shoot(){
     bullet.enableBody = true;
     bullet.body.velocity.x = 600;
     bullet.body.gravity.y = 85;
+    bullet.checkWorldBounds = true;
+    bullet.outOfBoundsKill = true;
+    
+    shoot_btn.input.enabled = false;
+    shoot_btn.tint = '0x636463';
+    setTimeout(function(){
+        shoot_btn.input.enabled = true; 
+        shoot_btn.tint = '0xffffff';
+    }, 500);
 }
 
 function initGlobals(){

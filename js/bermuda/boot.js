@@ -27,7 +27,6 @@ boot.prototype = {
           this.game.load.spritesheet("plane","assets/bermuda/images/plane2.png", 75, 63);
           this.game.load.image("1024x1024","assets/bermuda/images/1024x1024.png");
           this.game.load.audio('music', 'assets/bermuda/audio/music.mp3'); 
-          this.game.load.audio("loadMusic", "assets/bermuda/audio/loadMusic.mp3");
     },
     
     create: function(){        
