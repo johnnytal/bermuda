@@ -33,7 +33,6 @@ game_main.prototype = {
         
         this.world.setBounds(0, 0, WIDTH, HEIGHT + 10);
         bg = this.add.tileSprite(0, 0, 640, 480, 'bg');
-        bg.alpha = 0.9;
         bg.inputEnabled = true;
         bg.events.onInputDown.add(flyPlane, this);
 
@@ -52,15 +51,15 @@ game_main.prototype = {
         this.lightning.filters = [ this.game.add.filter('Glow') ];
         this.lightning.anchor.setTo(0.5, 0);
 
-        this.add.image(0, 2, 'blood').alpha = 0.5;
-        this.add.image(2, 0, 'small_bg').alpha = 0.1;
-        this.add.image(87, 0, 'small_bg').alpha = 0.1;
+        this.add.image(0, 2, 'blood').alpha = 0.6;
+        this.add.image(-10, -9, 'small_bg').alpha = 0.3;
+        this.add.image(75, -9, 'small_bg').alpha = 0.3;
 
         camera_btn = this.add.button(563, 2, 'cameraBtn');
         camera_btn.inputEnabled = true;
         camera_btn.input.useHandCursor = true;
         camera_btn.events.onInputDown.add(takePhoto, this);
-        camera_btn.alpha = 0.7;
+        camera_btn.alpha = 0.9;
         
         shoot_btn = game.add.button(0, 410, 'cannonBtn');
         shoot_btn.inputEnabled = false;
@@ -68,7 +67,7 @@ game_main.prototype = {
         shoot_btn.alpha = 0.9;
         shoot_btn.visible = false;
        
-        /*window.onkeydown = function(event) { 
+        window.onkeydown = function(event) { 
             if (event.keyCode == 65){
                 turnPlane('right');
             }
@@ -81,7 +80,7 @@ game_main.prototype = {
              else if (event.keyCode == 70){
                 turnPlane('down');
             }
-        };*/
+        };
 
         plane = this.add.sprite(150, 350, 'plane');
         this.physics.enable(plane, Phaser.Physics.ARCADE);
@@ -132,31 +131,31 @@ game_main.prototype = {
         totalNetLabel.padding.set(10, 5);
         totalNetLabel.anchor.set(1, 0.5);
         
-        bestNetLebal = this.add.text(115, 47, bestNet + ' $', {
+        bestNetLebal = this.add.text(111, 47, bestNet + ' $', {
             font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestNetLebal.alpha = 0.7;
         bestNetLebal.padding.set(10, 5);
-        this.add.image(95, 47, 'medal2').alpha = 0.8;
+        this.add.image(96, 47, 'medal2').alpha = 0.8;
         
-        evadeUpgradeLebal = game.add.text(380, 4, 'Evade: ?', {
+        evadeUpgradeLebal = game.add.text(380, 5, 'Evade: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         evadeUpgradeLebal.alpha = 0.3;
 
-        flipUpgradeLebal = game.add.text(380, 25, 'Thurst: ?', {
+        flipUpgradeLebal = game.add.text(380, 24, 'Thurst: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         flipUpgradeLebal.alpha = 0.3;
         
-        phantomUpgradeLebal = game.add.text(380, 46, 'Stealth: ?', {
+        phantomUpgradeLebal = game.add.text(380, 43, 'Stealth: ?', {
             font: '14px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         phantomUpgradeLebal.alpha = 0.3;
 
         netWorthLabel = this.add.text(320, 31, netWorth + "$", {
-            font: '26px ' + font, fill: '#e2f1f2', fontWeight: 'normal', align: 'center',
-            stroke: "0x0f0000", strokeThickness: 2
+            font: '27px ' + font, fill: '#e2e1f2', fontWeight: 'normal', align: 'center',
+            stroke: "0x0f0400", strokeThickness: 3
         });
         netWorthLabel.anchor.set(0.5, 0.5);
         netWorthLabel.alpha = 0.9; 
@@ -252,13 +251,13 @@ game_main.prototype = {
             shakesy = game.rnd.integerInRange(4, 10);
             game.add.tween(game.camera).to({ y: rndShake }, shakey_time, Phaser.Easing.Sinusoidal.InOut, false, 0, shakesy, true).start();
             
-            var rollTime = 3 + (timeFactor / 12); // roll background images, increase to roll faster
+            var rollTime = 2 + (timeFactor / 12); // roll background images, increase to roll faster
             
             bg.tilePosition.x -= rollTime; 
             
             terrain_group.forEach(function(terr) {
                 terr.x -= rollTime;
-                if (terr.x < -500) deco.destroy();
+                if (terr.x < -500) terr.destroy();
             }, this);
             
             deco_group.forEach(function(deco) {
@@ -375,19 +374,25 @@ game_main.prototype = {
         var height = game.rnd.integerInRange(70, 400);
         
         deco_timer = game.time.events.add(time_to_next_deco, function(){
+            
             this.createDeco();
                 
             deco = deco_group.create(750, height, decos[deco_type]);
-                if (deco_type == 1){
-                    deco.frame = 1;
-                    setTimeout(function(){
-                       deco.frame = 0; 
-                    },1500);
-                }
                 
-                if (storeEntered) deco.destroy();
-            }, 
-        this, []); 
+            if (deco_type == 1){
+                deco.frame = 1;
+                setTimeout(function(){
+                   deco.frame = 0; 
+                },1500);
+            }
+            
+            else if (deco_type == 0){
+                tweenTint(deco, 0x223300, 0x440066, 2750);
+            }
+            
+            if (storeEntered) deco.destroy();
+        
+        }, this, []); 
     }
 };
 
@@ -736,17 +741,17 @@ function turnPlane(direction){
     }
 
     else if (direction == 'up'){
-        manuverFactorUp = -2.5;
+        manuverFactorUp = -2.7;
     }
     
     else if (direction == 'down'){
-        manuverFactorUp = 2.5;
+        manuverFactorUp = 2.7;
     }
     
     setTimeout(function(){
         manuverFactor = 1;
         manuverFactorUp = 1;
-    }, 300);
+    }, 330);
 }
 
 function tweenTint(obj, startColor, endColor, time) {    
@@ -998,8 +1003,7 @@ function enterStore(){
     modal.showModal("store");
     
     for (n = 0; n < 19; n++){
-        game.add.tween(modal.getModalItem('store',n)).from( { x: 750 }, 650, Phaser.Easing.Linear.In, true);
-        
+        game.add.tween(modal.getModalItem('store',n)).from( { x: 750 }, 650, Phaser.Easing.Sinusoidal.InOut, true);  
     }
     
     for (n = 4; n < 10; n++){

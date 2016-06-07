@@ -25,6 +25,7 @@ preloader.prototype = {
 
         // load assets
 
+        this.game.load.image("background01", "assets/bermuda/images/background01.png");
         this.game.load.image("replay", "assets/bermuda/images/replay.png");
         this.game.load.image("menu", "assets/bermuda/images/menu.png");
         this.game.load.image("window", "assets/bermuda/images/panel.png");
@@ -67,6 +68,10 @@ preloader.prototype = {
         this.game.load.image("small_bg","assets/bermuda/images/small_bg.png");
         this.game.load.image("playBtn","assets/bermuda/images/playBtn.png");
         
+        this.game.load.image("question", "assets/bermuda/images/question.png");
+        this.game.load.image("play", "assets/bermuda/images/play.png");
+        this.game.load.image("ranks", "assets/bermuda/images/ranks.png");
+        
         this.game.load.image("cannonBtn", "assets/bermuda/images/cannon.png");
         this.game.load.image("cameraBtn","assets/bermuda/images/cameraBtn.png");
         this.game.load.image("upCamera","assets/bermuda/images/upCamera.png");
@@ -101,8 +106,38 @@ preloader.prototype = {
 
         loadMusic = game.add.audio('loadMusic').play();
         
-        bg = this.add.tileSprite(0, 0, 640, 480, 'bg');
+        bg = this.add.tileSprite(0, 0, 640, 480, 'background01');
         plane = this.add.sprite(150, 350, 'plane');
+
+        playBtn = this.add.button(250, 50, 'play');
+        playBtn.inputEnabled = true;
+        playBtn.input.useHandCursor = true;
+        playBtn.events.onInputDown.add(function(){
+            this.game.state.start("Game"); 
+            
+            try{
+                banner.hide();
+            }catch(e){}
+        }, this);
+        playBtn.alpha = 0.8;
+        
+        infoBtn = this.add.button(90, 150, 'question');
+        infoBtn.inputEnabled = true;
+        infoBtn.input.useHandCursor = true;
+        infoBtn.events.onInputDown.add(function(){
+
+        }, this);
+        infoBtn.alpha = 0.8;
+        infoBtn.scale.set(0.85, 0.85);
+        
+        ranksBtn = this.add.button(435, 150, 'ranks');
+        ranksBtn.inputEnabled = true;
+        ranksBtn.input.useHandCursor = true;
+        ranksBtn.events.onInputDown.add(function(){
+
+        }, this);
+        ranksBtn.alpha = 0.8;
+        ranksBtn.scale.set(0.85, 0.85);
 
         game.add.tween(plane).from( { x: - 500 }, 1000, Phaser.Easing.Sinusoidal.InOut, true);
 
@@ -119,13 +154,6 @@ preloader.prototype = {
     
     update: function(){
         bg.tilePosition.x -= 0.5;
-        
-        if(game.input.activePointer.isDown){
-            this.game.state.start("Game"); 
-            try{
-                banner.hide();
-            }catch(e){}
-        }
     }, 
 };
 
