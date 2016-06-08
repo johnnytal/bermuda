@@ -67,7 +67,7 @@ info.prototype = {
         this.add.text(20, 90, "Fly your plane above\nthe Bermuda triangle,\nTake photos of martians,\nand sell them to \nupgrade your plane and \nescape the horrors!  ", {
             font: '17px ' + font, fill: '#e1ffdd', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         }).alpha = 0.7;
-        this.add.text(20, 330, "Use your camera\nto take photos of martians\nand sell them to upgrade\nyour plane.\nClose-up photos worth more", {
+        this.add.text(20, 330, "Use your camera\nto take photos of martians,\nand sell them to upgrade\nyour plane.\nClose-up photos worth more", {
             font: '17px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         }).alpha = 0.7;
         

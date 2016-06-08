@@ -170,16 +170,23 @@ preloader.prototype = {
             font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
+        text4 = this.add.text(20, 420, " ~ Pass 120 Miles to escape the Bermuda triangle ~ ", {
+            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+        });
+        
         text1.alpha = 0.7;
         text2.alpha = 0.7;
-        text3.alpha = 0.7;
+        text3.alpha = 0.8;
+        text4.alpha = 0.9;
         text1.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         text2.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         text3.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+        text4.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         
         game.add.tween(text1).from( { alpha: 0}, 2000, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(text2).from( { alpha: 0}, 4000, Phaser.Easing.Sinusoidal.InOut, true);
-        game.add.tween(text3).from( { alpha: 0}, 6000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text3).from( { alpha: 0}, 5000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text4).from( { alpha: 0}, 6000, Phaser.Easing.Sinusoidal.InOut, true);
     }, 
     
     update: function(){
