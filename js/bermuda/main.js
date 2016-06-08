@@ -117,8 +117,8 @@ game_main.prototype = {
         bestNet = localStorage.getItem("bermuda-bestNet");
         if (bestNet == null) bestNet = 0;
         
-        bestScoreLebal = this.add.text(25, 47, bestScore + ' M', {
-            font: '17px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+        bestScoreLebal = this.add.text(25, 47, bestScore + 'M', {
+            font: '18px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestScoreLebal.alpha = 0.7;
         this.add.image(10, 47, 'medal1').alpha = 0.8;
@@ -131,8 +131,8 @@ game_main.prototype = {
         totalNetLabel.padding.set(10, 5);
         totalNetLabel.anchor.set(1, 0.5);
         
-        bestNetLebal = this.add.text(111, 47, bestNet + ' $', {
-            font: '15px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
+        bestNetLebal = this.add.text(112, 47, bestNet + '$', {
+            font: '16px ' + font, fill: '#e2f2e1', fontWeight: 'normal', align: 'center'
         });
         bestNetLebal.alpha = 0.7;
         bestNetLebal.padding.set(10, 5);
@@ -554,13 +554,13 @@ function takePhoto(){
 }
 
 function alienTextTweeing(_i, _distance, _price, _name, _xPos, _yPos){                          
-    var alienText =   
-    '' + _name + 
-    "\n" + _distance + " yd" +
-    "\n" + _price +  "$";
-      
+    var alienText =  
+     _price +  "$" +
+    "\n" + _distance + " yd" + 
+    '\n' + _name;
+
     var photoLabel = game.add.text(_xPos, _yPos,
-       alienText, {font: '22px ' + font, fill: 'white', fontWeight: 'normal', align: 'center',
+       alienText, {font: '22px ' + font, fill: '#e2e1f2', fontWeight: 'normal', align: 'center',
        stroke: "0x0f0000", strokeThickness: 2
        }
     );

@@ -3,20 +3,20 @@ var preloader = function(game){};
 preloader.prototype = {
     preload: function(){ 
         // create progress % text
-        this.add.image(0, 0, '1024x1024');
+        bootImg = this.add.image(0, 0, '1024x1024');
         
         font = 'Creepster';
 
-        this.progress = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 30, '0%',{
+        progressTxt = this.progress = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 30, '0%',{
              font: '25px ' + font, fill: 'white', fontWeight: 'normal', align: 'center'
         });
         this.progress.anchor.setTo(0.5, 0.5);
         this.game.load.onFileComplete.add(this.fileComplete, this);
     
         // create progress bar
-        var loadingBar = this.add.sprite(this.game.world.centerX - 37,  this.game.world.centerY + 30, "plane");
+        loadingBar = this.add.sprite(this.game.world.centerX - 37,  this.game.world.centerY + 30, "plane");
         
-        this.add.text(this.game.world.centerX - 37,  this.game.world.centerY - 150, "Loading...", {
+        loadingTxt = this.add.text(this.game.world.centerX - 37,  this.game.world.centerY - 150, "Loading...", {
             font: '18px ' + font, fill: 'lightgrey', fontWeight: 'normal', align: 'center'
         });
         
@@ -68,6 +68,7 @@ preloader.prototype = {
         this.game.load.image("small_bg","assets/bermuda/images/small_bg.png");
         this.game.load.image("playBtn","assets/bermuda/images/playBtn.png");
         
+        this.game.load.image("logo", "assets/bermuda/images/logo.png");
         this.game.load.image("question", "assets/bermuda/images/question.png");
         this.game.load.image("play", "assets/bermuda/images/play.png");
         this.game.load.image("ranks", "assets/bermuda/images/ranks.png");
@@ -105,11 +106,21 @@ preloader.prototype = {
     create: function(){
 
         loadMusic = game.add.audio('loadMusic').play();
+        bootImg.destroy();
+        loadingTxt.destroy();
+        loadingBar.destroy();
+        progressTxt.destroy();
         
         bg = this.add.tileSprite(0, 0, 640, 480, 'background01');
-        plane = this.add.sprite(150, 350, 'plane');
+        bg.alpha = 0.7;
+        
+        plane = this.add.sprite(110, 145, 'plane');
+        anim = plane.animations.add('walk');
+        anim.play(10, true);
+        game.add.tween(plane).from( { x: - 7500 }, 3500, Phaser.Easing.Sinusoidal.InOut, true);
+        
 
-        playBtn = this.add.button(250, 50, 'play');
+        playBtn = this.add.button(250, 150, 'play');
         playBtn.inputEnabled = true;
         playBtn.input.useHandCursor = true;
         playBtn.events.onInputDown.add(function(){
@@ -120,36 +131,55 @@ preloader.prototype = {
             }catch(e){}
         }, this);
         playBtn.alpha = 0.8;
-        
-        infoBtn = this.add.button(90, 150, 'question');
+        game.add.tween(playBtn).from( { alpha: 0}, 1500, Phaser.Easing.Sinusoidal.InOut, true);
+
+        infoBtn = this.add.button(475, 300, 'question');
         infoBtn.inputEnabled = true;
         infoBtn.input.useHandCursor = true;
         infoBtn.events.onInputDown.add(function(){
-
+            this.game.state.start("Info"); 
         }, this);
         infoBtn.alpha = 0.8;
         infoBtn.scale.set(0.85, 0.85);
+        game.add.tween(infoBtn).from( { alpha: 0}, 3000, Phaser.Easing.Sinusoidal.InOut, true);
         
-        ranksBtn = this.add.button(435, 150, 'ranks');
+       /* ranksBtn = this.add.button(435, 250, 'ranks');
         ranksBtn.inputEnabled = true;
         ranksBtn.input.useHandCursor = true;
         ranksBtn.events.onInputDown.add(function(){
 
         }, this);
         ranksBtn.alpha = 0.8;
-        ranksBtn.scale.set(0.85, 0.85);
+        ranksBtn.scale.set(0.85, 0.85);*/
 
-        game.add.tween(plane).from( { x: - 500 }, 1000, Phaser.Easing.Sinusoidal.InOut, true);
-
+        logo = game.add.sprite(320, 80, 'logo');
+        logo.anchor.set(0.5,0.5);
         
-       /* game.add.tween(titleText1).from( { y: - 500 }, 250, Phaser.Easing.Sinusoidal.InOut, true);
-        game.add.tween(titleText2).from( { y: - 500 }, 600, Phaser.Easing.Sinusoidal.InOut, true);
-        game.add.tween(titleText3).from( { y: - 500 }, 1000, Phaser.Easing.Sinusoidal.InOut, true);
-
-        titleText1.setShadow(3, 3, 'rgba(50,0,50,0.7)', 5);
-        titleText2.setShadow(3, 3, 'rgba(50,0,50,0.7)', 5);
-        titleText3.setShadow(3, 3, 'rgba(50,0,50,0.7)', 5);*/
-
+        game.add.tween(logo).from( { alpha: 0}, 3000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(logo.scale).from( { x: 2, y: 2}, 3000, Phaser.Easing.Sinusoidal.InOut, true);
+       
+        text1 = this.add.text(20, 270, " ~ Press to fly down ~ ", {
+            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+        });
+        
+        text2 = this.add.text(20, 320, " ~ Release to fly up ~ ", {
+            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+        });
+        
+        text3 = this.add.text(20, 370, " ~ Evade enemies & Obstacles, Don't drift off! ~ ", {
+            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+        });
+        
+        text1.alpha = 0.7;
+        text2.alpha = 0.7;
+        text3.alpha = 0.7;
+        text1.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+        text2.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+        text3.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+        
+        game.add.tween(text1).from( { alpha: 0}, 2000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text2).from( { alpha: 0}, 4000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text3).from( { alpha: 0}, 6000, Phaser.Easing.Sinusoidal.InOut, true);
     }, 
     
     update: function(){

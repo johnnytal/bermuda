@@ -22,7 +22,7 @@ game_over.prototype = {
             factor = 1.1;
         }*/
         
-        var messages = ['No shame in giving up...', '120M too much for ya?', 'Go back to crashing candies!',
+        var messages = ['No shame in giving up...', '120M too much for ya?', 'Back to crashing candies!',
          'Martians always triumph!', 'That must have hurt!'];
         var rndMess = game.rnd.integerInRange(0, 4);
         
