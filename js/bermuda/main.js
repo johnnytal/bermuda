@@ -103,7 +103,7 @@ game_main.prototype = {
 
         modal = new gameModal(game);
 
-        scoreLabel = this.add.text(75, 30, score.toFixed(1) + ' M' , {
+        scoreLabel = this.add.text(80, 30, score.toFixed(1) + ' M' , {
             font: '23px ' + font, fill: 'white', fontWeight: 'normal', align: 'center', 
             stroke: "0x000000", strokeThickness: 3
         });
@@ -356,7 +356,7 @@ game_main.prototype = {
             terrain.body.immovable = true;   
             
             if (terrain_type == 2){
-                tweenTint(terrain, 0xffff00, 0x0000ff, 3500); // tween the tint of sprite from red to blue over 2 seconds (2000ms)
+                tweenTint(terrain, 0xffff00, 0x0000ff, 4500); // tween the tint of sprite from red to blue over 2 seconds (2000ms)
             } 
             
             if (storeEntered) terrain.destroy();
@@ -383,11 +383,11 @@ game_main.prototype = {
                 deco.frame = 1;
                 setTimeout(function(){
                    deco.frame = 0; 
-                },1500);
+                }, 3000);
             }
             
             else if (deco_type == 0){
-                tweenTint(deco, 0x223300, 0x440066, 2750);
+                tweenTint(deco, 0x223300, 0x440066, 3750);
             }
             
             if (storeEntered) deco.destroy();

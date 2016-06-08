@@ -118,7 +118,6 @@ preloader.prototype = {
         anim = plane.animations.add('walk');
         anim.play(10, true);
         game.add.tween(plane).from( { x: - 7500 }, 3500, Phaser.Easing.Sinusoidal.InOut, true);
-        
 
         playBtn = this.add.button(250, 150, 'play');
         playBtn.inputEnabled = true;
@@ -154,8 +153,9 @@ preloader.prototype = {
 
         logo = game.add.sprite(320, 80, 'logo');
         logo.anchor.set(0.5,0.5);
+        logo.scale.set(0.85, 0.85);
         
-        game.add.tween(logo).from( { alpha: 0}, 3000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(logo).from( { alpha: 0}, 3200, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(logo.scale).from( { x: 2, y: 2}, 3000, Phaser.Easing.Sinusoidal.InOut, true);
        
         text1 = this.add.text(20, 270, " ~ Press to fly down ~ ", {
