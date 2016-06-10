@@ -7,9 +7,9 @@ game_over.prototype = {
     init: function(reason, score, best, total){
         loadMusic.play();
 
-        try{
+        /*try{
             banner.show();
-        } catch(e){}
+        } catch(e){}*/
         
         var factor = 1;
         var message = '';
@@ -22,7 +22,7 @@ game_over.prototype = {
             factor = 1.1;
         }*/
         
-        var messages = ['No shame in giving up...', '120M too much for ya?', 'Back to crashing candies!',
+        var messages = ['No shame in giving up...', '120M might be too much...', 'Crashing candies is easier...',
          'Martians always triumph!', 'That must have hurt!'];
         var rndMess = game.rnd.integerInRange(0, 4);
         
@@ -65,10 +65,14 @@ game_over.prototype = {
                     offsetY: 70,
                     offsetX: 50,
                     callback: function () { // start a new game
-                        clickSfx.play();
-                        try{
+                        
+                      /*  try{
                             banner.hide();
-                        } catch(e){}
+                        } catch(e){}*/
+                        
+                        loadMusic.stop();
+                        clickSfx.play();
+                        
                         game.state.start('Game');
                     }
                 },
@@ -78,7 +82,9 @@ game_over.prototype = {
                     offsetY: 70,
                     offsetX: -50,
                     callback: function () { // return to main menu
+                        loadMusic.stop();
                         clickSfx.play();
+                        
                         game.state.start('Preloader');
                     }
                 }
@@ -90,11 +96,5 @@ game_over.prototype = {
         for (n=0; n<4; n++){
             game.add.tween(modal.getModalItem('game_over',n)).from( { y: - 800 }, 600, Phaser.Easing.Sinusoidal.InOut, true);
         }
-        
-        homeImg = modal.getModalItem('game_over',2);
-        replayImg = modal.getModalItem('game_over',3);
-        
-        homeImg.input.useHandCursor = true;
-        replayImg.input.useHandCursor = true;
     }
 };

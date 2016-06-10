@@ -176,6 +176,7 @@ game_main.prototype = {
         explosionSfx = game.add.audio('explosion');
         clickSfx = game.add.audio('sfxClick1');
         cameraSfx = game.add.audio('cameraSfx', 0.3, false);
+        gunSfx = game.add.audio('gunSfx', 0.2, false);
         
         loadMusic.stop();
         music = game.add.audio('music', 0.7, true).play();
@@ -202,7 +203,7 @@ game_main.prototype = {
             mc = new Hammer(screen);
             mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL, threshold: 20 });
         }
-       
+       /*
         try{banner.hide();} catch(e){}
         
         if (bannerNotCraeted){
@@ -223,6 +224,7 @@ game_main.prototype = {
                 bannerNotCraeted = false;
             } catch(e){}
         }
+        */
     },
     
     update: function(){ 
@@ -993,9 +995,9 @@ function enterStore(){
                     storeEntered = false;
                     camera_btn.inputEnabled = true;
                     
-                    try{
+                   /* try{
                         banner.hide();
-                    } catch(e){}
+                    } catch(e){}*/
                     
                     modal.hideModal("store");
                 }
@@ -1028,7 +1030,7 @@ function purchaseItem(item, price){
         if (item.key == 'upCamera'){
             photosToTake += 5;
             photosLeftLabel.text = photosToTake;
-            modal.getModalItem('store', 17).text = "5 photos - 400$" + " (" + photosToTake + ")";
+            modal.getModalItem('store', 17).text = "+5 film - 400 $" + " (" + photosToTake + ")";
         }
         
         if (!(item.tint == '0xf75432')){
@@ -1083,6 +1085,7 @@ function purchaseItem(item, price){
             netWorth -= price;
             netWorthLabel.text = netWorth + "$";
             modal.getModalItem('store', 3).text = netWorthLabel.text;
+            clickSfx.play();
         }
     }
 }
@@ -1183,6 +1186,7 @@ function shoot(){
     bullet.body.gravity.y = 85;
     bullet.checkWorldBounds = true;
     bullet.outOfBoundsKill = true;
+    gunSfx.play();
     
     shoot_btn.input.enabled = false;
     shoot_btn.tint = '0x636463';

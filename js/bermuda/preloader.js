@@ -103,11 +103,14 @@ preloader.prototype = {
         this.game.load.audio('thunder3', 'assets/bermuda/audio/thunder3.mp3'); 
         this.game.load.audio('thunder4', 'assets/bermuda/audio/thunder4.mp3'); 
         this.game.load.audio('cameraSfx', 'assets/bermuda/audio/camera.mp3'); 
+        this.game.load.audio('gunSfx', 'assets/bermuda/audio/gun.mp3'); 
     },
     
     create: function(){
 
         loadMusic = game.add.audio('loadMusic').play();
+        clickSfx = game.add.audio('sfxClick1');
+        
         bootImg.destroy();
         loadingTxt.destroy();
         loadingBar.destroy();
@@ -125,11 +128,14 @@ preloader.prototype = {
         playBtn.inputEnabled = true;
         playBtn.input.useHandCursor = true;
         playBtn.events.onInputDown.add(function(){
+            loadMusic.stop();
+            clickSfx.play();
+
             this.game.state.start("Game"); 
             
-            try{
+           /* try{
                 banner.hide();
-            }catch(e){}
+            }catch(e){}*/
         }, this);
         playBtn.alpha = 0.8;
         game.add.tween(playBtn).from( { alpha: 0}, 1500, Phaser.Easing.Sinusoidal.InOut, true);
@@ -138,6 +144,8 @@ preloader.prototype = {
         infoBtn.inputEnabled = true;
         infoBtn.input.useHandCursor = true;
         infoBtn.events.onInputDown.add(function(){
+            loadMusic.stop();
+            clickSfx.play();
             this.game.state.start("Info"); 
         }, this);
         infoBtn.alpha = 0.8;
@@ -176,6 +184,22 @@ preloader.prototype = {
             font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
+        didYouKnows = 
+        [
+        'Upgrade stores are located\nevery 20 miles' , 'Trecirclus - from Latin,\nmeaning "Three circles"' ,
+        'Medusoza is a kind\nof Jellyfish', 'M1919 Browning machine gun\nwas widely used on aircrafts\nduring WWII',
+        "The Bermuda Triangle's\nalternate name is\nDevil's Triangle", '"Lockheed Have Blue"\nwas the first\nstealth aircraft (1977)\n',
+         "Splotch - \na large spot or mark \nof dirt, paint, etc", "120 Miles =~ 193 Km",
+         "Turboprop - \na turbine engine that\ndrives an aircraft propeller",
+         '"Life on Mars" is a song \nby David Bowie,\nreleased in 1971 ', '"Gorillas in the Mist"\nis a 1988 American drama film'
+         ];
+        rndDidYou = game.rnd.integerInRange(0, didYouKnows.length-1);
+        
+        didYouKnowLabel = this.add.text(430, 175, "Did you know...\n" + didYouKnows[rndDidYou] , {
+            font: '16px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+        });
+        didYouKnowLabel.alpha = 0.6;
+        
         text1.alpha = 0.7;
         text2.alpha = 0.7;
         text3.alpha = 0.8;
@@ -189,6 +213,8 @@ preloader.prototype = {
         game.add.tween(text2).from( { alpha: 0}, 4000, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(text3).from( { alpha: 0}, 5000, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(text4).from( { alpha: 0}, 6000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(didYouKnowLabel).from( { alpha: 0}, 6000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(didYouKnowLabel).from( { y: -300}, 2500, Phaser.Easing.Sinusoidal.InOut, true);
     }, 
     
     update: function(){

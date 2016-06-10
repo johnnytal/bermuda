@@ -64,7 +64,7 @@ info.prototype = {
         plane = game.add.sprite(20, 20, 'plane').scale.set(0.75, 0.75);        
         camera = game.add.sprite(20, 250, 'cameraBtn').scale.set(0.75, 0.75);
         
-        this.add.text(20, 90, "Fly your plane above\nthe Bermuda triangle,\nTake photos of martians,\nbuy upgrades, \n& pass 120 miles to escape!  ", {
+        this.add.text(20, 90, "Fly your plane above\nthe Bermuda triangle.\nTake photos of martians,\nbuy upgrades every 20 miles, \n& pass 120 miles to escape!  ", {
             font: '17px ' + font, fill: '#e1ffdd', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         }).alpha = 0.7;
         this.add.text(20, 320, "Use the camera to take\nphotos of martians,\nClose-up photos of\ndangerous martians are\nworth more money.", {
