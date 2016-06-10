@@ -191,7 +191,11 @@ preloader.prototype = {
         "The Bermuda Triangle's\nalternate name is\nDevil's Triangle", '"Lockheed Have Blue"\nwas the first\nstealth aircraft (1977)\n',
          "Splotch - \na large spot or mark \nof dirt, paint, etc", "120 Miles =~ 193 Km",
          "Turboprop - \na turbine engine that\ndrives an aircraft propeller",
-         '"Life on Mars" is a song \nby David Bowie,\nreleased in 1971 ', '"Gorillas in the Mist"\nis a 1988 American drama film'
+         '"Life on Mars" is a song \nby David Bowie,\nreleased in 1971 ', '"Gorillas in the Mist"\nis a 1988 American drama film',
+         "You can't take\nphots of Martians\nif they're behind you",
+         "You can't take\nphots of Martians\nin stealth mode",
+         "You can't take\nphots of Martians\nin stealth mode",
+         "Stalactites hang from\nthe ceiling of a cave,\nstalagmites grow from\nthe cave floor."
          ];
         rndDidYou = game.rnd.integerInRange(0, didYouKnows.length-1);
         
