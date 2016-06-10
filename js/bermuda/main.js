@@ -175,6 +175,7 @@ game_main.prototype = {
         ];
         explosionSfx = game.add.audio('explosion');
         clickSfx = game.add.audio('sfxClick1');
+        cameraSfx = game.add.audio('cameraSfx', 0.3, false);
         
         loadMusic.stop();
         music = game.add.audio('music', 0.7, true).play();
@@ -519,6 +520,8 @@ function takePhoto(){
         
         camera_btn.input.enabled = false;
         camera_btn.tint = '0x636463';
+        cameraSfx.play();
+        
         setTimeout(function(){
             camera_btn.input.enabled = true; 
             camera_btn.tint = '0xffffff';

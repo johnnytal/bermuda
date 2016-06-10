@@ -93,6 +93,8 @@ preloader.prototype = {
 
         this.game.load.spritesheet("explosion","assets/bermuda/images/explosion.png", 88, 75);
 
+        this.game.load.audio('loadMusic', 'assets/bermuda/audio/loadMusic.mp3'); 
+        this.game.load.audio('music', 'assets/bermuda/audio/music.mp3'); 
         this.game.load.audio('sfxClick1', 'assets/bermuda/audio/switch1.mp3'); 
         this.game.load.audio('sfxClick2', 'assets/bermuda/audio/switch2.mp3'); 
         this.game.load.audio('explosion', 'assets/bermuda/audio/explosion.mp3'); 
@@ -100,7 +102,7 @@ preloader.prototype = {
         this.game.load.audio('thunder2', 'assets/bermuda/audio/thunder2.mp3'); 
         this.game.load.audio('thunder3', 'assets/bermuda/audio/thunder3.mp3'); 
         this.game.load.audio('thunder4', 'assets/bermuda/audio/thunder4.mp3'); 
-        this.game.load.audio('loadMusic', 'assets/bermuda/audio/loadMusic.mp3'); 
+        this.game.load.audio('cameraSfx', 'assets/bermuda/audio/camera.mp3'); 
     },
     
     create: function(){
