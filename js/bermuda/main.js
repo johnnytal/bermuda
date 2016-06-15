@@ -166,6 +166,7 @@ game_main.prototype = {
         });
         photosLeftLabel.anchor.set(0.5, 0.5);
         photosLeftLabel.padding.set(5, 5);
+        photosLeftLabel.alpha = 0.7;
         
         scoreInt();
 
@@ -203,8 +204,7 @@ game_main.prototype = {
             mc = new Hammer(screen);
             mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL, threshold: 20 });
         }
-
-        
+     
         if (bannerNotCraeted){
             try{
                 Cocoon.Ad.AdMob.configure({
@@ -218,8 +218,7 @@ game_main.prototype = {
                 
                 bannerNotCraeted = false;
             } catch(e){}
-        }
-        
+        }   
     },
     
     update: function(){ 

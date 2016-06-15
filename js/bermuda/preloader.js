@@ -107,7 +107,22 @@ preloader.prototype = {
     },
     
     create: function(){
-
+        
+        if (bannerNotCraeted){
+            try{
+                Cocoon.Ad.AdMob.configure({
+                    android: { 
+                          interstitial:"ca-app-pub-9795366520625065/3684264237"
+                    }
+                });
+                
+                interstitial = Cocoon.Ad.AdMob.createInterstitial();
+                interstitial.load();
+                
+                bannerNotCraeted = false;
+            } catch(e){}
+        }
+        
         loadMusic = game.add.audio('loadMusic').play();
         clickSfx = game.add.audio('sfxClick1');
         
@@ -169,50 +184,56 @@ preloader.prototype = {
         game.add.tween(logo.scale).from( { x: 2, y: 2}, 3000, Phaser.Easing.Sinusoidal.InOut, true);
        
         text1 = this.add.text(20, 240, " ~ Press to fly down ~ ", {
-            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+            font: '21px ' + font, fill: '#c1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
         text2 = this.add.text(20, 290, " ~ Release to fly up ~ ", {
-            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+            font: '21px ' + font, fill: '#b1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
         text3 = this.add.text(20, 340, " ~ Evade enemies & Obstacles, Don't drift off! ~ ", {
-            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+            font: '21px ' + font, fill: '#a1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
         text4 = this.add.text(20, 390, " ~ Pass 120 Miles to escape Bermuda ~ ", {
-            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+            font: '21px ' + font, fill: '#61dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
         text5 = this.add.text(20, 440, " ~ Don't forget to take pictures! ~ ", {
-            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+            font: '21px ' + font, fill: '#51dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
         didYouKnows = 
         [
-        'Upgrade stores are located\nevery 20 miles' , 'Trecirclus - from Latin,\nmeaning "Three circles"' ,
+        'Upgrade stores are located\nevery 20 miles', 
+        'Trecirclus - from Latin,\nmeaning "Three circles"',
         'Medusoza is a kind\nof Jellyfish', 'M1919 Browning machine gun\nwas widely used on aircrafts\nduring WWII',
         "The Bermuda Triangle's\nalternate name is\nDevil's Triangle", '"Lockheed Have Blue"\nwas the first\nstealth aircraft (1977)\n',
          "Splotch - \na large spot or mark \nof dirt, paint, etc", "120 Miles =~ 193 Km",
          "Turboprop - \na turbine engine that\ndrives an aircraft propeller",
-         '"Life on Mars" is a song \nby David Bowie,\nreleased in 1971 ', '"Gorillas in the Mist"\nis a 1988 American drama film',
+         '"Life on Mars" is a song \nby David Bowie,\nreleased in 1971 ', 
+         '"Gorillas in the Mist"\nis a 1988 American drama film',
          "You can't take\nphots of Martians\nif they're behind you",
          "You can't take\nphots of Martians\nin stealth mode",
          "You can't take\nphots of Martians\nin stealth mode",
-         "Stalactites hang from\nthe ceiling of a cave,\nstalagmites grow from\nthe cave floor."
+         "Stalactites hang from\nthe ceiling of a cave,\nstalagmites grow from\nthe cave floor.",
+         "In 1969 two keepers disappeared\nfrom Great Isaac Lighthouse\nin the Bermuda triangle,\nnever to be found",
+         "In 1945 five TBF Avengers\ndisappeared over the\nBermuda triangle.\nThe aircraft sent to find them\ndisappeared as well. ",
+         "In 1814 the USS Wasp\ndisappeared in the\nBermuda triangle\nwith 140 people on board",
+         "The number of vessels reported\nmissing in the Bermuda triangle\nis about the same as in\nany other part of the ocean."
          ];
-        rndDidYou = game.rnd.integerInRange(0, didYouKnows.length-1);
+        rndDidYou = game.rnd.integerInRange(didYouKnows.length-1, didYouKnows.length-1);
         
-        didYouKnowLabel = this.add.text(430, 175, "Did you know...\n" + didYouKnows[rndDidYou] , {
-            font: '16px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+        didYouKnowLabel = this.add.text(425, 165, didYouKnows[rndDidYou] , {
+            font: '16px ' + font, fill: '#e1b011', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         didYouKnowLabel.alpha = 0.6;
         
         text1.alpha = 0.7;
-        text2.alpha = 0.7;
-        text3.alpha = 0.8;
-        text4.alpha = 0.9;
-        text5.alpha = 0.95;
+        text2.alpha = 0.8;
+        text3.alpha = 0.9;
+        text4.alpha = 0.8;
+        text5.alpha = 0.7;
         text1.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         text2.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         text3.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);

@@ -61,11 +61,7 @@ game_over.prototype = {
                     offsetY: 70,
                     offsetX: 50,
                     callback: function () { // start a new game
-                        
-                        try{
-                            interstitial.show();
-                        } catch(e){}
-                        
+  
                         loadMusic.stop();
                         clickSfx.play();
                         

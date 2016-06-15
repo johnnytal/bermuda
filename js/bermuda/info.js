@@ -80,6 +80,10 @@ info.prototype = {
         bg.tilePosition.x -= 0.5;
         
         if(game.input.activePointer.isDown){ 
+            try{
+                interstitial.show();
+            } catch(e){}
+                        
             this.game.state.start("Preloader"); 
         }
     }, 
