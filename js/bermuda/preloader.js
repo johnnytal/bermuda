@@ -168,19 +168,23 @@ preloader.prototype = {
         game.add.tween(logo).from( { alpha: 0}, 3200, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(logo.scale).from( { x: 2, y: 2}, 3000, Phaser.Easing.Sinusoidal.InOut, true);
        
-        text1 = this.add.text(20, 270, " ~ Press to fly down ~ ", {
+        text1 = this.add.text(20, 240, " ~ Press to fly down ~ ", {
             font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
-        text2 = this.add.text(20, 320, " ~ Release to fly up ~ ", {
+        text2 = this.add.text(20, 290, " ~ Release to fly up ~ ", {
             font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
-        text3 = this.add.text(20, 370, " ~ Evade enemies & Obstacles, Don't drift off! ~ ", {
+        text3 = this.add.text(20, 340, " ~ Evade enemies & Obstacles, Don't drift off! ~ ", {
             font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
-        text4 = this.add.text(20, 420, " ~ Pass 120 Miles to escape the Bermuda triangle ~ ", {
+        text4 = this.add.text(20, 390, " ~ Pass 120 Miles to escape Bermuda ~ ", {
+            font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
+        });
+        
+        text5 = this.add.text(20, 440, " ~ Don't forget to take pictures! ~ ", {
             font: '21px ' + font, fill: '#e1dde1', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
         });
         
@@ -208,15 +212,18 @@ preloader.prototype = {
         text2.alpha = 0.7;
         text3.alpha = 0.8;
         text4.alpha = 0.9;
+        text5.alpha = 0.95;
         text1.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         text2.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         text3.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         text4.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+        text5.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
         
-        game.add.tween(text1).from( { alpha: 0}, 2000, Phaser.Easing.Sinusoidal.InOut, true);
-        game.add.tween(text2).from( { alpha: 0}, 4000, Phaser.Easing.Sinusoidal.InOut, true);
-        game.add.tween(text3).from( { alpha: 0}, 5000, Phaser.Easing.Sinusoidal.InOut, true);
-        game.add.tween(text4).from( { alpha: 0}, 6000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text1).from( { alpha: 0}, 1000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text2).from( { alpha: 0}, 2500, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text3).from( { alpha: 0}, 4000, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text4).from( { alpha: 0}, 5500, Phaser.Easing.Sinusoidal.InOut, true);
+        game.add.tween(text5).from( { alpha: 0}, 7000, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(didYouKnowLabel).from( { alpha: 0}, 6000, Phaser.Easing.Sinusoidal.InOut, true);
         game.add.tween(didYouKnowLabel).from( { y: -300}, 2500, Phaser.Easing.Sinusoidal.InOut, true);
     }, 

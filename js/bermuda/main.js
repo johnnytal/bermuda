@@ -160,8 +160,8 @@ game_main.prototype = {
         netWorthLabel.anchor.set(0.5, 0.5);
         netWorthLabel.alpha = 0.9; 
         
-        photosLeftLabel = this.add.text(603, 41, photosToTake, {
-            font: '21px ' + font, fill: '#f4e4f7', fontWeight: 'normal', align: 'center', 
+        photosLeftLabel = this.add.text(583, 26, photosToTake, {
+            font: '21px ' + font, fill: '#e4e3f6', fontWeight: 'normal', align: 'center', 
             stroke: "0x000000", strokeThickness: 3
         });
         photosLeftLabel.anchor.set(0.5, 0.5);
@@ -203,28 +203,23 @@ game_main.prototype = {
             mc = new Hammer(screen);
             mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL, threshold: 20 });
         }
-       /*
-        try{banner.hide();} catch(e){}
+
         
         if (bannerNotCraeted){
             try{
                 Cocoon.Ad.AdMob.configure({
                     android: { 
-                          banner:"ca-app-pub-9795366520625065/8387859836"
+                          interstitial:"ca-app-pub-9795366520625065/3684264237"
                     }
                 });
                 
-                banner = Cocoon.Ad.AdMob.createBanner();
-                banner.load();
-                
-                banner.on("load", function(){
-                    banner.setLayout( Cocoon.Ad.BannerLayout.BOTTOM_CENTER );
-                });
+                interstitial = Cocoon.Ad.AdMob.createInterstitial();
+                interstitial.load();
                 
                 bannerNotCraeted = false;
             } catch(e){}
         }
-        */
+        
     },
     
     update: function(){ 
@@ -254,7 +249,7 @@ game_main.prototype = {
             shakesy = game.rnd.integerInRange(4, 10);
             game.add.tween(game.camera).to({ y: rndShake }, shakey_time, Phaser.Easing.Sinusoidal.InOut, false, 0, shakesy, true).start();
             
-            var rollTime = 2 + (timeFactor / 12); // roll background images, increase to roll faster
+            var rollTime = 3 + (timeFactor / 12); // roll background images, increase to roll faster
             
             bg.tilePosition.x -= rollTime; 
             

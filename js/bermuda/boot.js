@@ -32,7 +32,8 @@ boot.prototype = {
     create: function(){        
         game.stage.backgroundColor = '#002745';
         font = 'Creepster';
-        //bannerNotCraeted = true;
+        bannerNotCraeted = true;
+        var interstitial;
         
         if (this.game.device.desktop){
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;

@@ -6,10 +6,6 @@ game_over.prototype = {
     
     init: function(reason, score, best, total){
         loadMusic.play();
-
-        /*try{
-            banner.show();
-        } catch(e){}*/
         
         var factor = 1;
         var message = '';
@@ -66,9 +62,9 @@ game_over.prototype = {
                     offsetX: 50,
                     callback: function () { // start a new game
                         
-                      /*  try{
-                            banner.hide();
-                        } catch(e){}*/
+                        try{
+                            interstitial.show();
+                        } catch(e){}
                         
                         loadMusic.stop();
                         clickSfx.play();
@@ -82,6 +78,10 @@ game_over.prototype = {
                     offsetY: 70,
                     offsetX: -50,
                     callback: function () { // return to main menu
+                        try{
+                            interstitial.show();
+                        } catch(e){}
+                        
                         loadMusic.stop();
                         clickSfx.play();
                         
