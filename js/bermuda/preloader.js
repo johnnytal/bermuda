@@ -222,7 +222,7 @@ preloader.prototype = {
          "In 1814 the USS Wasp\ndisappeared in the\nBermuda triangle\nwith 140 people on board",
          "The number of vessels reported\nmissing in the Bermuda triangle\nis about the same as in\nany other part of the ocean."
          ];
-        rndDidYou = game.rnd.integerInRange(didYouKnows.length-1, didYouKnows.length-1);
+        rndDidYou = game.rnd.integerInRange(0, didYouKnows.length-1);
         
         didYouKnowLabel = this.add.text(425, 165, didYouKnows[rndDidYou] , {
             font: '16px ' + font, fill: '#e1b011', fontWeight: 'normal', align: 'left', stroke: "0x000000", strokeThickness: 2
